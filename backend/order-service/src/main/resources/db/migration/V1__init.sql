@@ -1,0 +1,2 @@
+create table if not exists easyshop.orders(id bigserial primary key,user_email text not null,total numeric(12,2) not null,status text not null default 'CREATED',created_at timestamptz not null default now());
+create table if not exists easyshop.order_items(id bigserial primary key,order_id bigint not null references easyshop.orders(id) on delete cascade,product_id bigint not null,name text not null,price numeric(12,2) not null,quantity int not null check (quantity>0));

@@ -1,0 +1,1 @@
+create table if not exists easyshop.products(id bigserial primary key,name text not null,description text,price numeric(12,2) not null check (price>=0),stock int not null check (stock>=0),created_at timestamptz not null default now());

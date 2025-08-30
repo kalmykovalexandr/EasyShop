@@ -1,0 +1,1 @@
+package com.easyshop.order.domain;import org.springframework.data.jpa.repository.*;import java.util.*;public interface OrderRepository extends JpaRepository<Order,Long>{List<Order> findByUserEmailOrderByCreatedAtDesc(String email);} 
