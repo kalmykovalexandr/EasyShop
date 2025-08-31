@@ -5,10 +5,10 @@ COPY pom.xml ./pom.xml
 COPY common-security/pom.xml ./common-security/pom.xml
 COPY common-security/src ./common-security/src
 COPY auth-service/pom.xml ./auth-service/pom.xml
-RUN mvn -q -DskipTests -f pom.xml -pl auth-service -am dependency:go-offline
+RUN mvn -q -DskipTests -f auth-service/pom.xml dependency:go-offline
 
 COPY auth-service/src ./auth-service/src
-RUN mvn -q -DskipTests -f pom.xml -pl auth-service -am package
+RUN mvn -q -DskipTests -f auth-service/pom.xml package
 
 FROM eclipse-temurin:21-jre
 WORKDIR /opt/app

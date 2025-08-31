@@ -5,10 +5,10 @@ COPY pom.xml ./pom.xml
 COPY common-security/pom.xml ./common-security/pom.xml
 COPY common-security/src ./common-security/src
 COPY order-service/pom.xml ./order-service/pom.xml
-RUN mvn -q -DskipTests -f pom.xml -pl order-service -am dependency:go-offline
+RUN mvn -q -DskipTests -f order-service/pom.xml dependency:go-offline
 
 COPY order-service/src ./order-service/src
-RUN mvn -q -DskipTests -f pom.xml -pl order-service -am package
+RUN mvn -q -DskipTests -f order-service/pom.xml package
 
 FROM eclipse-temurin:21-jre
 WORKDIR /opt/app
