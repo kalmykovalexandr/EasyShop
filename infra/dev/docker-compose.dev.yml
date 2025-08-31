@@ -37,7 +37,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "8081:8080"
+      - "9001:9001"
 
   product-service:
     image: maven:3.9.8-eclipse-temurin-21
@@ -57,7 +57,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "8082:8080"
+      - "9002:9002"
 
   order-service:
     image: maven:3.9.8-eclipse-temurin-21
@@ -77,7 +77,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "8083:8080"
+      - "9003:9003"
 
   api-gateway:
     image: maven:3.9.8-eclipse-temurin-21
@@ -91,9 +91,9 @@ services:
       - ../../.env
     environment:
       # Внутренние адреса сервисов в сети compose
-      AUTH_URL: http://auth-service:8080
-      PRODUCT_URL: http://product-service:8080
-      ORDER_URL: http://order-service:8080
+      AUTH_URL: http://auth-service:9001
+      PRODUCT_URL: http://product-service:9002
+      ORDER_URL: http://order-service:9003
     depends_on:
       - auth-service
       - product-service
