@@ -2,14 +2,14 @@ version: "3.9"
 
 services:
   frontend:
-    build: ../frontend
+    build: ../../frontend
     ports:
       - "80:80"
     depends_on:
       - api-gateway
 
   api-gateway:
-    build: ../backend/api-gateway
+    build: ../../backend/api-gateway
     ports:
       - "8080:8080"
     depends_on:
@@ -18,7 +18,7 @@ services:
       - product-service
 
   auth-service:
-    build: ../backend/auth-service
+    build: ../../backend/auth-service
     ports:
       - "8081:8080"
     environment:
@@ -28,7 +28,7 @@ services:
       - JWT_SECRET=${JWT_SECRET}
 
   order-service:
-    build: ../backend/order-service
+    build: ../../backend/order-service
     ports:
       - "8082:8080"
     environment:
@@ -38,7 +38,7 @@ services:
       - JWT_SECRET=${JWT_SECRET}
 
   product-service:
-    build: ../backend/product-service
+    build: ../../backend/product-service
     ports:
       - "8083:8080"
     environment:
