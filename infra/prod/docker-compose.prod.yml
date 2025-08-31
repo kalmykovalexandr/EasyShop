@@ -1,50 +1,62 @@
+version: "3.9"
 
 services:
-  postgres:
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_DB: postgres
-    volumes: [ dbdata:/var/lib/postgresql/data ]
-  auth-service:
-    build: ./backend/auth-service
-    environment:
-      SPRING_DATASOURCE_URL: ${DB_URL}
-      SPRING_DATASOURCE_USERNAME: ${DB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
-      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
-    depends_on: [ postgres ]
-  product-service:
-    build: ./backend/product-service
-    environment:
-      SPRING_DATASOURCE_URL: ${DB_URL}
-      SPRING_DATASOURCE_USERNAME: ${DB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
-      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
-    depends_on: [ postgres ]
-  order-service:
-    build: ./backend/order-service
-    environment:
-      SPRING_DATASOURCE_URL: ${DB_URL}
-      SPRING_DATASOURCE_USERNAME: ${DB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
-      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
-      PRODUCT_BASE_URL: http://product-service:9002
-    depends_on: [ postgres, product-service ]
+  frontend:
+    build: ../frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - api-gateway
+
   api-gateway:
-    build: ./backend/api-gateway
+    build: ../backend/api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - auth-service
+      - order-service
+      - product-service
+
+  auth-service:
+    build: ../backend/auth-service
+    ports:
+      - "8081:8080"
     environment:
-      AUTH_URL: http://auth-service:9001
-      PRODUCTS_URL: http://product-service:9002
-      ORDERS_URL: http://order-service:9003
-      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS}
-    depends_on: [ auth-service, product-service, order-service ]
-  web:
-    build: ./frontend
-    ports: [ "80:80" ]
-    depends_on: [ api-gateway ]
-volumes: { dbdata: {} }
+      - DB_URL=${DB_URL}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+
+  order-service:
+    build: ../backend/order-service
+    ports:
+      - "8082:8080"
+    environment:
+      - DB_URL=${DB_URL}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+
+  product-service:
+    build: ../backend/product-service
+    ports:
+      - "8083:8080"
+    environment:
+      - DB_URL=${DB_URL}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=easyshop
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:
