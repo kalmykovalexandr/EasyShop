@@ -7,8 +7,6 @@ import org.springframework.http.*;
 import org.springframework.security.crypto.password.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-
 @RestController
 public class AuthController {
     private final UserRepository users;
@@ -22,34 +20,34 @@ public class AuthController {
     }
 
     @GetMapping("/healthz")
-    public Map<String, Object> h() {
-        return Map.of("ok", true);
+    public ApiResponseDto h() {
+        return new ApiResponseDto(true, null);
     }
 
     @GetMapping("/readyz")
-    public Map<String, Object> r() {
-        return Map.of("ok", true);
+    public ApiResponseDto r() {
+        return new ApiResponseDto(true, null);
     }
 
     @PostMapping("/api/auth/register")
-    public ResponseEntity<?> reg(@Valid @RequestBody AuthDto d) {
+    public ResponseEntity<ApiResponseDto> reg(@Valid @RequestBody AuthDto d) {
         if (users.existsByEmail(d.email()))
-            return ResponseEntity.badRequest().body(Map.of("message", "Email already used"));
+            return ResponseEntity.badRequest().body(new ApiResponseDto(false, "Email already used"));
         users.save(User.builder().email(d.email()).passwordHash(enc.encode(d.password())).role("USER").build());
-        return ResponseEntity.ok(Map.of("ok", true));
+        return ResponseEntity.ok(new ApiResponseDto(true, null));
     }
 
     @PostMapping("/api/auth/login")
     public ResponseEntity<?> login(@Valid @RequestBody AuthDto d) {
         var u = users.findByEmail(d.email()).orElse(null);
         if (u == null || !enc.matches(d.password(), u.getPasswordHash()))
-            return ResponseEntity.badRequest().body(Map.of("message", "Invalid credentials"));
+            return ResponseEntity.badRequest().body(new ApiResponseDto(false, "Invalid credentials"));
         String t = jwt.create(u.getEmail(), u.getRole());
-        return ResponseEntity.ok(Map.of("token", t, "email", u.getEmail(), "role", u.getRole()));
+        return ResponseEntity.ok(new LoginResponseDto(t, u.getEmail(), u.getRole()));
     }
 
     @GetMapping("/api/auth/verify")
-    public ResponseEntity<?> v() {
-        return ResponseEntity.ok(Map.of("ok", true));
+    public ResponseEntity<ApiResponseDto> v() {
+        return ResponseEntity.ok(new ApiResponseDto(true, null));
     }
 }
