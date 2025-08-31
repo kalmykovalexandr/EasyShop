@@ -11,6 +11,7 @@
     <description>Aggregator POM for EasyShop microservices</description>
 
     <modules>
+        <module>common-security</module>
         <module>auth-service</module>
         <module>product-service</module>
         <module>order-service</module>

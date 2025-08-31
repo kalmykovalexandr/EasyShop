@@ -5,8 +5,9 @@ import org.springframework.http.*;
 import org.springframework.transaction.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.*;
-import java.util.*;
+import java.util.List;
+
+import jakarta.validation.*;
 
 @RestController
 public class ProductController {
@@ -17,13 +18,13 @@ public class ProductController {
     }
 
     @GetMapping("/healthz")
-    public Map<String, Object> h() {
-        return Map.of("ok", true);
+    public ApiResponseDto h() {
+        return new ApiResponseDto(true, null);
     }
 
     @GetMapping("/readyz")
-    public Map<String, Object> r() {
-        return Map.of("ok", true);
+    public ApiResponseDto r() {
+        return new ApiResponseDto(true, null);
     }
 
     @GetMapping("/api/products")
@@ -37,18 +38,23 @@ public class ProductController {
     }
 
     @PostMapping("/api/admin/products")
-    public ResponseEntity<?> create(@RequestBody Map<String, Object> b) {
-        Product p = Product.builder().name(String.valueOf(b.get("name"))).description(String.valueOf(b.getOrDefault("description", ""))).price(new BigDecimal(String.valueOf(b.get("price")))).stock(Integer.parseInt(String.valueOf(b.get("stock")))).build();
+    public ResponseEntity<Product> create(@Valid @RequestBody ProductCreateDto b) {
+        Product p = Product.builder()
+                .name(b.name())
+                .description(b.description())
+                .price(b.price())
+                .stock(b.stock())
+                .build();
         return ResponseEntity.status(201).body(repo.save(p));
     }
 
     @PutMapping("/api/admin/products/{id}")
-    public ResponseEntity<?> upd(@PathVariable Long id, @RequestBody Map<String, Object> b) {
+    public ResponseEntity<?> upd(@PathVariable Long id, @Valid @RequestBody ProductUpdateDto b) {
         return repo.findById(id).map(p -> {
-            p.setName(String.valueOf(b.get("name")));
-            p.setDescription(String.valueOf(b.getOrDefault("description", "")));
-            p.setPrice(new BigDecimal(String.valueOf(b.get("price"))));
-            p.setStock(Integer.parseInt(String.valueOf(b.get("stock"))));
+            p.setName(b.name());
+            p.setDescription(b.description());
+            p.setPrice(b.price());
+            p.setStock(b.stock());
             return ResponseEntity.ok(repo.save(p));
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -62,12 +68,13 @@ public class ProductController {
 
     @PostMapping("/api/admin/products/{id}/reserve")
     @Transactional
-    public ResponseEntity<?> res(@PathVariable Long id, @RequestParam int qty) {
+    public ResponseEntity<ApiResponseDto> res(@PathVariable Long id, @RequestParam int qty) {
         return repo.findById(id).map(p -> {
-            if (p.getStock() < qty) return ResponseEntity.status(409).body(Map.of("message", "Not enough stock"));
+            if (p.getStock() < qty)
+                return ResponseEntity.status(409).body(new ApiResponseDto(false, "Not enough stock"));
             p.setStock(p.getStock() - qty);
             repo.save(p);
-            return ResponseEntity.ok(Map.of("ok", true));
+            return ResponseEntity.ok(new ApiResponseDto(true, null));
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
