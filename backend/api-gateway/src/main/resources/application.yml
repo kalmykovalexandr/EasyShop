@@ -7,8 +7,9 @@ spring:
           uri: ${AUTH_URL:http://auth-service:9001}
           predicates: [ Path=/api/auth/**, /healthz, /readyz ]
         - id: products
-          uri: ${PRODUCTS_URL:http://product-service:9002}
-          predicates: [ Path=/api/products/**, /api/admin/products/** ]
+          uri: ${PRODUCT_URL:http://product-service:9002}
+          predicates: [ Path=/api/products/** ]
         - id: orders
-          uri: ${ORDERS_URL:http://order-service:9003}
-          predicates: [ Path=/api/orders/**, /api/admin/orders/** ]
+          uri: ${ORDER_URL:http://order-service:9003}
+          predicates: [ Path=/api/orders/** ]
+          
