@@ -1,24 +1,33 @@
-version: "3.9"
+# Compose file for production. Uses per-module Dockerfiles but builds with backend root as context.
+# IMPORTANT: ensure your .env.prod has DB_URL=jdbc:postgresql://db:5432/easyshop
 
 services:
   frontend:
-    build: ../../frontend
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile
     ports:
       - "80:80"
     depends_on:
       - api-gateway
+    restart: unless-stopped
 
   api-gateway:
-    build: ../../backend/api-gateway
+    build:
+      context: ../../backend          # root so parent pom.xml is available
+      dockerfile: api-gateway/Dockerfile
     ports:
       - "8080:8080"
     depends_on:
       - auth-service
       - order-service
       - product-service
+    restart: unless-stopped
 
   auth-service:
-    build: ../../backend/auth-service
+    build:
+      context: ../../backend
+      dockerfile: auth-service/Dockerfile
     ports:
       - "8081:8080"
     environment:
@@ -26,9 +35,14 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - db
+    restart: unless-stopped
 
   order-service:
-    build: ../../backend/order-service
+    build:
+      context: ../../backend
+      dockerfile: order-service/Dockerfile
     ports:
       - "8082:8080"
     environment:
@@ -36,9 +50,14 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - db
+    restart: unless-stopped
 
   product-service:
-    build: ../../backend/product-service
+    build:
+      context: ../../backend
+      dockerfile: product-service/Dockerfile
     ports:
       - "8083:8080"
     environment:
@@ -46,6 +65,9 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - db
+    restart: unless-stopped
 
   db:
     image: postgres:15-alpine
@@ -57,6 +79,7 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    restart: unless-stopped
 
 volumes:
   pgdata:
