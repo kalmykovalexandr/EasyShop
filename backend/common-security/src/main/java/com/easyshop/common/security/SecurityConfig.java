@@ -1,4 +1,4 @@
-package com.easyshop.product.config;
+package com.easyshop.common.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -11,11 +11,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 public class SecurityConfig {
 
-    @Value("${jwt.secret}")
-    String secret;
-
     @Bean
-    SecurityFilterChain c(HttpSecurity h, @Value("${jwt.secret}") String secret) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity h, @Value("${jwt.secret}") String secret) throws Exception {
         h.csrf(cs -> cs.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(r -> r
