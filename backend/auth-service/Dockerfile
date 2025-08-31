@@ -2,11 +2,13 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
 COPY pom.xml ./pom.xml
+COPY common-security/pom.xml ./common-security/pom.xml
+COPY common-security/src ./common-security/src
 COPY auth-service/pom.xml ./auth-service/pom.xml
-RUN mvn -q -DskipTests -f auth-service/pom.xml dependency:go-offline
+RUN mvn -q -DskipTests -f pom.xml -pl auth-service -am dependency:go-offline
 
 COPY auth-service/src ./auth-service/src
-RUN mvn -q -DskipTests -f auth-service/pom.xml package
+RUN mvn -q -DskipTests -f pom.xml -pl auth-service -am package
 
 FROM eclipse-temurin:21-jre
 WORKDIR /opt/app

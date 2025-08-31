@@ -2,11 +2,13 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
 COPY pom.xml ./pom.xml
+COPY common-security/pom.xml ./common-security/pom.xml
+COPY common-security/src ./common-security/src
 COPY order-service/pom.xml ./order-service/pom.xml
-RUN mvn -q -DskipTests -f order-service/pom.xml dependency:go-offline
+RUN mvn -q -DskipTests -f pom.xml -pl order-service -am dependency:go-offline
 
 COPY order-service/src ./order-service/src
-RUN mvn -q -DskipTests -f order-service/pom.xml package
+RUN mvn -q -DskipTests -f pom.xml -pl order-service -am package
 
 FROM eclipse-temurin:21-jre
 WORKDIR /opt/app
