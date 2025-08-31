@@ -1,9 +1,14 @@
+# Stage 1: Build frontend
 FROM node:20-alpine AS build
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci --quiet
+COPY package*.json ./
+RUN npm install --frozen-lockfile
 COPY . .
-RUN /bin/sh -c 'if [ -f package-lock.json ]; then npm ci --quiet; else npm install --quiet; fi'
+RUN npm run build
+
+# Stage 2: Nginx serve
 FROM nginx:1.27-alpine
-WORKDIR /usr/share/nginx/html
-COPY --from=build /app/dist .
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
