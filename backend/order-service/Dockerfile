@@ -2,6 +2,7 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
 COPY pom.xml ./pom.xml
+RUN mvn -q -N -DskipTests install
 COPY common-security/pom.xml ./common-security/pom.xml
 COPY common-security/src ./common-security/src
 COPY order-service/pom.xml ./order-service/pom.xml
