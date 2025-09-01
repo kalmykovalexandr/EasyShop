@@ -4,4 +4,5 @@ ARG GITHUB_TOKEN
 COPY settings.xml /usr/share/maven/ref/settings.xml
 COPY pom.xml ./pom.xml
 COPY common-security/ ./common-security/
-RUN --mount=type=cache,target=/root/.m2 mvn --settings /usr/share/maven/ref/settings.xml -q -DskipTests -pl common-security install
+COPY common-web/ ./common-web/
+RUN --mount=type=cache,target=/root/.m2 mvn --settings /usr/share/maven/ref/settings.xml -q -DskipTests -pl common-security,common-web install
