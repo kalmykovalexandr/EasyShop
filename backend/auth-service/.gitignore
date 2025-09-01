@@ -1,0 +1,15 @@
+# сборка
+target/
+*.jar
+*.class
+
+# конфигурация
+.env
+.env.*
+*.log
+
+# IDE/OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
