@@ -5,6 +5,8 @@ import com.easyshop.order.domain.OrderItem;
 import com.easyshop.order.domain.OrderItemRepository;
 import com.easyshop.order.domain.OrderRepository;
 import com.easyshop.order.web.dto.CheckoutDto;
+import com.easyshop.order.web.dto.OrderItemDto;
+import com.easyshop.order.web.dto.OrderResponseDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
@@ -27,25 +29,27 @@ public class OrderService {
         this.http = RestClient.builder().baseUrl(base).build();
     }
 
-    public List<Map<String, Object>> list(String email) {
+    public List<OrderResponseDto> list(String email) {
         return orders.findByUserEmailOrderByCreatedAtDesc(email).stream()
-                .map(o -> Map.of(
-                        "id", o.getId(),
-                        "total", o.getTotal(),
-                        "status", o.getStatus(),
-                        "items", o.getItems().stream().map(i -> Map.of(
-                                "productId", i.getProductId(),
-                                "name", i.getName(),
-                                "price", i.getPrice(),
-                                "quantity", i.getQuantity()
-                        )).toList()
+                .map(o -> new OrderResponseDto(
+                        o.getId(),
+                        o.getTotal(),
+                        o.getStatus(),
+                        o.getItems().stream()
+                                .map(i -> new OrderItemDto(
+                                        i.getProductId(),
+                                        i.getName(),
+                                        i.getPrice(),
+                                        i.getQuantity()
+                                ))
+                                .toList()
                 ))
                 .toList();
     }
 
     @Transactional
-    public Map<String, Object> checkout(CheckoutDto dto, String email) {
-        List<Map<String, Object>> det = new ArrayList<>();
+    public OrderResponseDto checkout(CheckoutDto dto, String email) {
+        List<OrderItemDto> det = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
 
         for (CheckoutDto.Item it : dto.items()) {
@@ -82,11 +86,11 @@ public class OrderService {
 
             BigDecimal price = new BigDecimal(String.valueOf(prod.get("price")));
             total = total.add(price.multiply(BigDecimal.valueOf(it.quantity())));
-            det.add(Map.of(
-                    "productId", it.productId(),
-                    "name", prod.get("name"),
-                    "price", price,
-                    "quantity", it.quantity()
+            det.add(new OrderItemDto(
+                    it.productId(),
+                    String.valueOf(prod.get("name")),
+                    price,
+                    it.quantity()
             ));
         }
 
@@ -96,24 +100,24 @@ public class OrderService {
         o.setStatus("CREATED");
         orders.save(o);
 
-        for (var d : det) {
+        for (OrderItemDto d : det) {
             OrderItem oi = new OrderItem(
                     null,
                     o,
-                    ((Number) d.get("productId")).longValue(),
-                    String.valueOf(d.get("name")),
-                    (BigDecimal) d.get("price"),
-                    ((Number) d.get("quantity")).intValue()
+                    d.productId(),
+                    d.name(),
+                    d.price(),
+                    d.quantity()
             );
             items.save(oi);
             o.getItems().add(oi);
         }
 
-        return Map.of(
-                "id", o.getId(),
-                "total", o.getTotal(),
-                "status", o.getStatus(),
-                "items", det
+        return new OrderResponseDto(
+                o.getId(),
+                o.getTotal(),
+                o.getStatus(),
+                det
         );
     }
 
