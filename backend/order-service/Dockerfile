@@ -1,7 +1,5 @@
-FROM maven:3.9-eclipse-temurin-21 AS build
+FROM easyshop-build-base:latest AS build
 WORKDIR /app
-COPY pom.xml ./pom.xml
-RUN --mount=type=cache,target=/root/.m2 mvn -q -N -DskipTests install
 COPY common-security/pom.xml ./common-security/pom.xml
 COPY common-security/src ./common-security/src
 COPY order-service/pom.xml ./order-service/pom.xml
