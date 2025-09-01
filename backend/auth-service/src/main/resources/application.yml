@@ -1,5 +1,7 @@
 server: { port: 8080 }
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application: { name: auth-service }
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/postgres}
