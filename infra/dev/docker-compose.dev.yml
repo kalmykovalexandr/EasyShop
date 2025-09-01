@@ -18,13 +18,22 @@ services:
       timeout: 3s
       retries: 30
 
+  backend-bootstrap:
+    image: maven:3.9.8-eclipse-temurin-21
+    container_name: easyshop-dev-backend-bootstrap
+    working_dir: /backend
+    command: mvn -q -N -DskipTests install
+    volumes:
+      - ../../backend:/backend
+      - m2:/root/.m2
+
   auth-service:
     image: maven:3.9.8-eclipse-temurin-21
     container_name: easyshop-dev-auth
-    working_dir: /app
+    working_dir: /backend/auth-service
     command: mvn -q -Dspring.profiles.active=dev -DskipTests spring-boot:run
     volumes:
-      - ../../backend/auth-service:/app
+      - ../../backend:/backend
       - m2:/root/.m2
     env_file:
       - ../../.env
@@ -34,6 +43,8 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
       # если сервис читает ALLOWED_ORIGINS/JWT_SECRET — подтянет из .env
     depends_on:
+      backend-bootstrap:
+        condition: service_completed_successfully
       db:
         condition: service_healthy
     ports:
@@ -42,10 +53,10 @@ services:
   product-service:
     image: maven:3.9.8-eclipse-temurin-21
     container_name: easyshop-dev-product
-    working_dir: /app
+    working_dir: /backend/product-service
     command: mvn -q -Dspring.profiles.active=dev -DskipTests spring-boot:run
     volumes:
-      - ../../backend/product-service:/app
+      - ../../backend:/backend
       - m2:/root/.m2
     env_file:
       - ../../.env
@@ -54,6 +65,8 @@ services:
       DB_USER: ${DB_USER:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
     depends_on:
+      backend-bootstrap:
+        condition: service_completed_successfully
       db:
         condition: service_healthy
     ports:
@@ -62,10 +75,10 @@ services:
   order-service:
     image: maven:3.9.8-eclipse-temurin-21
     container_name: easyshop-dev-order
-    working_dir: /app
+    working_dir: /backend/order-service
     command: mvn -q -Dspring.profiles.active=dev -DskipTests spring-boot:run
     volumes:
-      - ../../backend/order-service:/app
+      - ../../backend:/backend
       - m2:/root/.m2
     env_file:
       - ../../.env
@@ -74,6 +87,8 @@ services:
       DB_USER: ${DB_USER:-postgres}
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
     depends_on:
+      backend-bootstrap:
+        condition: service_completed_successfully
       db:
         condition: service_healthy
     ports:
@@ -82,10 +97,10 @@ services:
   api-gateway:
     image: maven:3.9.8-eclipse-temurin-21
     container_name: easyshop-dev-gateway
-    working_dir: /app
+    working_dir: /backend/api-gateway
     command: mvn -q -Dspring.profiles.active=dev -DskipTests spring-boot:run
     volumes:
-      - ../../backend/api-gateway:/app
+      - ../../backend:/backend
       - m2:/root/.m2
     env_file:
       - ../../.env
@@ -95,9 +110,14 @@ services:
       PRODUCT_URL: ${PRODUCT_URL:-http://product-service:9002}
       ORDER_URL: ${ORDER_URL:-http://order-service:9003}
     depends_on:
-      - auth-service
-      - product-service
-      - order-service
+      backend-bootstrap:
+        condition: service_completed_successfully
+      auth-service:
+        condition: service_started
+      product-service:
+        condition: service_started
+      order-service:
+        condition: service_started
     ports:
       - "8080:8080"
 
