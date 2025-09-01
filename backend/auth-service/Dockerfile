@@ -1,10 +1,12 @@
 FROM easyshop-build-base:latest AS build
+ARG GITHUB_ACTOR
+ARG GITHUB_TOKEN
 WORKDIR /app
 
 COPY auth-service/pom.xml ./auth-service/pom.xml
-RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests -f auth-service/pom.xml dependency:go-offline
+RUN --mount=type=cache,target=/root/.m2 mvn --settings /usr/share/maven/ref/settings.xml -q -DskipTests -f auth-service/pom.xml dependency:go-offline
 COPY auth-service/src ./auth-service/src
-RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests -f auth-service/pom.xml package
+RUN --mount=type=cache,target=/root/.m2 mvn --settings /usr/share/maven/ref/settings.xml -q -DskipTests -f auth-service/pom.xml package
 
 FROM eclipse-temurin:21-jre
 WORKDIR /opt/app
