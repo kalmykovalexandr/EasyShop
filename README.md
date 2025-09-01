@@ -13,6 +13,15 @@ DOCKER_BUILDKIT=1 docker compose -f infra/dev/docker-compose.dev.yml up --build
 
 > Docker builds require BuildKit. Ensure `DOCKER_BUILDKIT=1` is set when building images.
 
+## Production setup
+
+On the server, copy the example environment file and fill in the values:
+
+```bash
+cp infra/prod/.env.example infra/prod/.env
+# edit infra/prod/.env with real values
+```
+
 ## Build image versioning
 
 The shared build image `easyshop-build-base` is tagged with a semantic
