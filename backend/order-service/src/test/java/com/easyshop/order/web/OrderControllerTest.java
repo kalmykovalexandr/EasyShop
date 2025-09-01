@@ -1,7 +1,6 @@
 package com.easyshop.order.web;
 
-import com.easyshop.order.domain.OrderItemRepository;
-import com.easyshop.order.domain.OrderRepository;
+import com.easyshop.order.service.OrderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,10 +22,7 @@ class OrderControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    private OrderRepository orders;
-
-    @MockBean
-    private OrderItemRepository items;
+    private OrderService service;
 
     @Test
     void healthEndpointWorks() throws Exception {
