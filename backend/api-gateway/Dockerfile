@@ -6,6 +6,9 @@ COPY settings.xml /usr/share/maven/ref/settings.xml
 COPY pom.xml ./
 COPY common-security ./common-security
 COPY common-web ./common-web
+COPY auth-service ./auth-service
+COPY product-service ./product-service
+COPY order-service ./order-service
 COPY api-gateway ./api-gateway
 RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests -pl api-gateway -am package
 FROM eclipse-temurin:21-jre
