@@ -1,8 +1,10 @@
-server: { port: ${SERVER_PORT:8080} }
+server:
+  port: ${SERVER_PORT}
 spring:
   config:
     import: optional:file:.env[.properties]
-  application: { name: api-gateway }
+  application:
+    name: api-gateway
   cloud:
     gateway:
       routes:
@@ -11,10 +13,10 @@ spring:
           predicates: [ Path=/api/auth/**, /healthz, /readyz ]
         - id: products
           uri: ${PRODUCT_URL}
-          predicates: [ Path=/api/products/** ]
+          predicates: [Path=/api/products/**]
         - id: orders
           uri: ${ORDER_URL}
-          predicates: [ Path=/api/orders/** ]
+          predicates: [Path=/api/orders/**]
 
 logging:
   pattern:
