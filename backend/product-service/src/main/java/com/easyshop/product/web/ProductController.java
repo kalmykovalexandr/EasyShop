@@ -1,8 +1,8 @@
 package com.easyshop.product.web;
 
-import com.easyshop.product.domain.*;
-import org.springframework.http.*;
-import org.springframework.transaction.annotation.*;
+import com.easyshop.product.domain.Product;
+import com.easyshop.product.service.ProductService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,10 +11,10 @@ import jakarta.validation.*;
 
 @RestController
 public class ProductController {
-    private final ProductRepository repo;
+    private final ProductService service;
 
-    public ProductController(ProductRepository r) {
-        repo = r;
+    public ProductController(ProductService service) {
+        this.service = service;
     }
 
     @GetMapping("/healthz")
@@ -29,52 +29,38 @@ public class ProductController {
 
     @GetMapping("/api/products")
     public List<Product> list() {
-        return repo.findAll().reversed();
+        return service.list();
     }
 
     @GetMapping("/api/products/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
-        return repo.findById(id).<ResponseEntity<?>>map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return service.get(id).<ResponseEntity<?>>map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/api/admin/products")
     public ResponseEntity<Product> create(@Valid @RequestBody ProductCreateDto b) {
-        Product p = Product.builder()
-                .name(b.name())
-                .description(b.description())
-                .price(b.price())
-                .stock(b.stock())
-                .build();
-        return ResponseEntity.status(201).body(repo.save(p));
+        Product p = service.create(b);
+        return ResponseEntity.status(201).body(p);
     }
 
     @PutMapping("/api/admin/products/{id}")
     public ResponseEntity<?> upd(@PathVariable Long id, @Valid @RequestBody ProductUpdateDto b) {
-        return repo.findById(id).map(p -> {
-            p.setName(b.name());
-            p.setDescription(b.description());
-            p.setPrice(b.price());
-            p.setStock(b.stock());
-            return ResponseEntity.ok(repo.save(p));
-        }).orElseGet(() -> ResponseEntity.notFound().build());
+        return service.update(id, b)
+                .<ResponseEntity<?>>map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/api/admin/products/{id}")
     public ResponseEntity<?> del(@PathVariable Long id) {
-        if (!repo.existsById(id)) return ResponseEntity.notFound().build();
-        repo.deleteById(id);
-        return ResponseEntity.noContent().build();
+        return service.delete(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @PostMapping("/api/admin/products/{id}/reserve")
-    @Transactional
     public ResponseEntity<ApiResponseDto> res(@PathVariable Long id, @RequestParam int qty) {
-        return repo.findById(id).map(p -> {
-            if (p.getStock() < qty)
-                return ResponseEntity.status(409).body(new ApiResponseDto(false, "Not enough stock"));
-            p.setStock(p.getStock() - qty);
-            repo.save(p);
-            return ResponseEntity.ok(new ApiResponseDto(true, null));
-        }).orElseGet(() -> ResponseEntity.notFound().build());
+        return switch (service.reserve(id, qty)) {
+            case OK -> ResponseEntity.ok(new ApiResponseDto(true, null));
+            case NOT_ENOUGH_STOCK -> ResponseEntity.status(409).body(new ApiResponseDto(false, "Not enough stock"));
+            case NOT_FOUND -> ResponseEntity.notFound().build();
+        };
     }
 }
