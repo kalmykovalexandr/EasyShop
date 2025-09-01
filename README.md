@@ -28,15 +28,10 @@ cp infra/prod/.env.example infra/prod/.env
 # edit infra/prod/.env with real values
 ```
 
-## Build image versioning
+## Сборка и запуск
 
-The shared build image `easyshop-build-base` is tagged with a semantic
-version. Build and tag the image explicitly, for example:
+Перед сборкой установите переменные окружения `GITHUB_ACTOR` и `GITHUB_TOKEN`.
 
+```bash
+DOCKER_BUILDKIT=1 docker compose --env-file infra/prod/.env.prod -f infra/prod/docker-compose.prod.yml build
 ```
-docker build -t easyshop-build-base:1.0.0 -f backend/build-base.Dockerfile backend
-```
-
-Service Dockerfiles and CI workflows pin to a specific version tag. When
-the base image is updated, create a new tag (e.g., `1.0.1`, `1.1.0`, etc.)
-and update all references accordingly instead of reusing `latest`.
