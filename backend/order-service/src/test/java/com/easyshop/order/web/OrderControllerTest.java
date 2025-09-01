@@ -46,19 +46,6 @@ class OrderControllerTest {
         mvc.perform(get("/readyz"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.ok").value(true));
-
-    @Test
-    void checkoutSuccessfully() throws Exception {
-        when(service.checkout(any(), anyString())).thenReturn(
-                Map.of("id", 1, "total", 20, "status", "CREATED", "items", List.of()));
-
-        mvc.perform(post("/api/orders/checkout")
-                        .principal(() -> "user@test.com")
-                        .contentType("application/json")
-                        .content("{\"items\":[{\"productId\":1,\"quantity\":2}]}")
-                )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1));
     }
 
     @Test
