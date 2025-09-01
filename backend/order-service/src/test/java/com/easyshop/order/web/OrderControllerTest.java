@@ -42,6 +42,12 @@ class OrderControllerTest {
     }
 
     @Test
+    void readyEndpointWorks() throws Exception {
+        mvc.perform(get("/readyz"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.ok").value(true));
+
+    @Test
     void checkoutSuccessfully() throws Exception {
         when(service.checkout(any(), anyString())).thenReturn(
                 Map.of("id", 1, "total", 20, "status", "CREATED", "items", List.of()));

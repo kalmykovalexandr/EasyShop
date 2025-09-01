@@ -14,17 +14,17 @@ public class AuthController {
     }
 
     @GetMapping("/healthz")
-    public ApiResponseDto h() {
+    public ApiResponseDto health() {
         return new ApiResponseDto(true, null);
     }
 
     @GetMapping("/readyz")
-    public ApiResponseDto r() {
+    public ApiResponseDto ready() {
         return new ApiResponseDto(true, null);
     }
 
     @PostMapping("/api/auth/register")
-    public ResponseEntity<ApiResponseDto> reg(@Valid @RequestBody AuthDto d) {
+    public ResponseEntity<ApiResponseDto> register(@Valid @RequestBody AuthDto d) {
         if (!service.register(d))
             return ResponseEntity.badRequest().body(new ApiResponseDto(false, "Email already used"));
         return ResponseEntity.ok(new ApiResponseDto(true, null));
@@ -39,7 +39,7 @@ public class AuthController {
     }
 
     @GetMapping("/api/auth/verify")
-    public ResponseEntity<ApiResponseDto> v() {
+    public ResponseEntity<ApiResponseDto> verify() {
         return ResponseEntity.ok(new ApiResponseDto(true, null));
     }
 }

@@ -32,6 +32,13 @@ class ProductControllerTest {
     }
 
     @Test
+    void readyEndpointWorks() throws Exception {
+        mvc.perform(get("/readyz"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.ok").value(true));
+    }
+  
+    @Test
     void reserveProductSuccessfully() throws Exception {
         when(service.reserve(1L, 2)).thenReturn(ProductService.ReserveResult.OK);
 
