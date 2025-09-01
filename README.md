@@ -49,7 +49,7 @@ cp infra/prod/.env.example infra/prod/.env
 Перед сборкой установите переменные окружения `GITHUB_ACTOR` и `GITHUB_TOKEN`.
 
 ```bash
-DOCKER_BUILDKIT=1 docker compose --env-file infra/prod/.env.prod -f infra/prod/docker-compose.prod.yml build
+DOCKER_BUILDKIT=1 docker compose --env-file infra/prod/.env -f infra/prod/docker-compose.prod.yml build
 ```
 
 ## Сборка микросервисов отдельно
