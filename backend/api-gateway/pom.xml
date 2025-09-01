@@ -13,19 +13,6 @@
     <artifactId>api-gateway</artifactId>
     <name>api-gateway</name>
 
-    <repositories>
-        <repository>
-            <id>github</id>
-            <url>${repo.url}</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
