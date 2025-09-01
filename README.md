@@ -28,6 +28,16 @@ cp infra/prod/.env.example infra/prod/.env
 # edit infra/prod/.env with real values
 ```
 
+Build the images, constructing the shared base layer first. Ensure `GITHUB_ACTOR`
+and `GITHUB_TOKEN` are exported so Docker can access private dependencies:
+
+```bash
+# build base image
+docker compose --env-file infra/prod/.env build build-base
+# build remaining services
+docker compose build
+```
+
 ## Build image versioning
 
 The shared build image `easyshop-build-base` is tagged with a semantic

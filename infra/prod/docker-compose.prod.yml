@@ -1,8 +1,17 @@
 # Compose file for production. Uses per-module Dockerfiles but builds with backend root as context.
 # IMPORTANT: ensure your .env.prod has DB_URL=jdbc:postgresql://db:5432/easyshop
-# Ensure GITHUB_ACTOR and GITHUB_TOKEN are defined before running `docker compose build`
+# Ensure GITHUB_ACTOR and GITHUB_TOKEN are defined. Build the base image first via
+# `docker compose --env-file infra/prod/.env build build-base` before running `docker compose build`
 
 services:
+  build-base:
+    build:
+      context: ../../backend
+      dockerfile: build-base.Dockerfile
+      args:
+        GITHUB_ACTOR: ${GITHUB_ACTOR}
+        GITHUB_TOKEN: ${GITHUB_TOKEN}
+
   frontend:
     build:
       context: ../../frontend
