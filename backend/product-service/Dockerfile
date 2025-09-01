@@ -1,6 +1,4 @@
 FROM easyshop-build-base:1.0.0 AS build
-ARG GITHUB_ACTOR
-ARG GITHUB_TOKEN
 WORKDIR /app
 COPY product-service/pom.xml ./product-service/pom.xml
 COPY product-service/src ./product-service/src
