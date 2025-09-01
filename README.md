@@ -22,6 +22,6 @@ version. Build and tag the image explicitly, for example:
 docker build -t easyshop-build-base:1.0.0 -f backend/build-base.Dockerfile backend
 ```
 
-Service Dockerfiles pin to a specific version tag. When the base image is
-updated, create a new tag (e.g., `1.0.1`, `1.1.0`, etc.) and update the
-service Dockerfiles accordingly instead of reusing `latest`.
+Service Dockerfiles and CI workflows pin to a specific version tag. When
+the base image is updated, create a new tag (e.g., `1.0.1`, `1.1.0`, etc.)
+and update all references accordingly instead of reusing `latest`.
