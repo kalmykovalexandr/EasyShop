@@ -1,12 +1,7 @@
-FROM maven:3.9-eclipse-temurin-21 AS build
+FROM easyshop-build-base:latest AS build
 WORKDIR /app
 
-COPY pom.xml ./pom.xml
-RUN mvn -q -N -DskipTests install
-COPY common-security/pom.xml ./common-security/pom.xml
-COPY common-security/src ./common-security/src
 COPY auth-service/pom.xml ./auth-service/pom.xml
-RUN mvn -q -DskipTests -f common-security/pom.xml install
 RUN mvn -q -DskipTests -f auth-service/pom.xml dependency:go-offline
 
 COPY auth-service/src ./auth-service/src
