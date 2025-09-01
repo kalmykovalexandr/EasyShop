@@ -1,4 +1,4 @@
-FROM easyshop-build-base:latest AS build
+FROM easyshop-build-base:1.0.0 AS build
 WORKDIR /app
 
 COPY auth-service/pom.xml ./auth-service/pom.xml
