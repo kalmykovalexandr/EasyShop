@@ -21,5 +21,15 @@ jobs:
           distribution: temurin
           java-version: '21'
           cache: maven
-      - name: Run tests
-        run: mvn -B -f backend/pom.xml test
+      - name: Deploy common-security
+        run: mvn -B -f backend/common-security/pom.xml deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Test auth service
+        run: mvn -B -f backend/auth-service/pom.xml test
+      - name: Test product service
+        run: mvn -B -f backend/product-service/pom.xml test
+      - name: Test order service
+        run: mvn -B -f backend/order-service/pom.xml test
+      - name: Test API gateway
+        run: mvn -B -f backend/api-gateway/pom.xml test
