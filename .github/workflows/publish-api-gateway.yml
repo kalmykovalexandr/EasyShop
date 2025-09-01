@@ -1,0 +1,31 @@
+---
+name: Publish API Gateway
+
+'on':
+  push:
+    paths:
+      - 'backend/api-gateway/**'
+      - '.github/workflows/publish-api-gateway.yml'
+  pull_request:
+    paths:
+      - 'backend/api-gateway/**'
+      - '.github/workflows/publish-api-gateway.yml'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Deploy API Gateway
+        run: |
+          mvn -B -f backend/pom.xml \
+            --settings backend/settings.xml \
+            --projects api-gateway deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
