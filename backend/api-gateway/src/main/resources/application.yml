@@ -1,17 +1,19 @@
-server: { port: 8080 }
+server: { port: ${SERVER_PORT:8080} }
 spring:
+  config:
+    import: optional:file:.env[.properties]
   application: { name: api-gateway }
   cloud:
     gateway:
       routes:
         - id: auth
-          uri: ${AUTH_URL:http://auth-service:9001}
+          uri: ${AUTH_URL}
           predicates: [ Path=/api/auth/**, /healthz, /readyz ]
         - id: products
-          uri: ${PRODUCT_URL:http://product-service:9002}
+          uri: ${PRODUCT_URL}
           predicates: [ Path=/api/products/** ]
         - id: orders
-          uri: ${ORDER_URL:http://order-service:9003}
+          uri: ${ORDER_URL}
           predicates: [ Path=/api/orders/** ]
 
 logging:
