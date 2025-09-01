@@ -1,17 +1,17 @@
-server: { port: 9003 }
+server: { port: ${SERVER_PORT:9003} }
 spring:
   config:
     import: optional:file:.env[.properties]
   application: { name: order-service }
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/postgres}
-    username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa: { "hibernate": { "ddl-auto": "validate" }, "properties": { "hibernate": { "dialect": "org.hibernate.dialect.PostgreSQLDialect" } } }
   flyway: { "enabled": true,"locations": "classpath:db/migration","schemas": "easyshop","create-schemas": true }
-jwt: { "secret": "${JWT_SECRET:change-me}","ttlMinutes": 60 }
+jwt: { "secret": "${JWT_SECRET}","ttlMinutes": ${JWT_TTL_MINUTES:60} }
 product:
-  base-url: ${PRODUCT_BASE_URL:http://product-service:9002}
+  base-url: ${PRODUCT_BASE_URL}
 
 logging:
   pattern:
