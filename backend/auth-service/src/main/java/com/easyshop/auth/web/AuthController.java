@@ -1,5 +1,6 @@
 package com.easyshop.auth.web;
 
+import com.easyshop.common.web.ApiResponseDto;
 import com.easyshop.auth.service.AuthService;
 import jakarta.validation.*;
 import org.springframework.http.*;

@@ -1,5 +1,6 @@
 package com.easyshop.product.web;
 
+import com.easyshop.common.web.ApiResponseDto;
 import com.easyshop.product.domain.Product;
 import com.easyshop.product.service.ProductService;
 import org.springframework.http.ResponseEntity;
