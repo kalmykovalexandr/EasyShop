@@ -8,4 +8,7 @@
 
 ## Quickly start (dev)
 ```bash
-docker compose -f infra/dev/docker-compose.dev.yml up --build
+DOCKER_BUILDKIT=1 docker compose -f infra/dev/docker-compose.dev.yml up --build
+```
+
+> Docker builds require BuildKit. Ensure `DOCKER_BUILDKIT=1` is set when building images.

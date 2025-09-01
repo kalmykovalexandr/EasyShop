@@ -1,9 +1,14 @@
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
-
-COPY . .
-RUN mvn -B -q -DskipTests -pl order-service -am package
-
+COPY pom.xml ./pom.xml
+RUN --mount=type=cache,target=/root/.m2 mvn -q -N -DskipTests install
+COPY common-security/pom.xml ./common-security/pom.xml
+COPY common-security/src ./common-security/src
+COPY order-service/pom.xml ./order-service/pom.xml
+RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests -f common-security/pom.xml install
+RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests -f order-service/pom.xml dependency:go-offline
+COPY order-service/src ./order-service/src
+RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests -f order-service/pom.xml package
 FROM eclipse-temurin:21-jre
 WORKDIR /opt/app
 COPY --from=build /app/order-service/target/*.jar app.jar
