@@ -35,3 +35,13 @@ cp infra/prod/.env.example infra/prod/.env
 ```bash
 DOCKER_BUILDKIT=1 docker compose --env-file infra/prod/.env.prod -f infra/prod/docker-compose.prod.yml build
 ```
+
+## Сборка микросервисов отдельно
+
+Для сборки конкретного сервиса используйте Maven, указывая его модуль. Например, для `auth-service`:
+
+```bash
+mvn -f backend/pom.xml -pl auth-service -am package
+DOCKER_BUILDKIT=1 docker build -f backend/auth-service/Dockerfile -t auth-service backend
+docker run --rm -p 8080:8080 auth-service
+```
