@@ -1,5 +1,6 @@
 server: { port: 8080 }
 spring:
+  application: { name: auth-service }
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/postgres}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
@@ -7,4 +8,8 @@ spring:
   jpa: { "hibernate": { "ddl-auto": "validate" }, "properties": { "hibernate": { "dialect": "org.hibernate.dialect.PostgreSQLDialect" } } }
   flyway: { "enabled": true,"locations": "classpath:db/migration","schemas": "easyshop","create-schemas": true }
 jwt: { "secret": "${JWT_SECRET:change-me}","ttlMinutes": 60 }
+
+logging:
+  pattern:
+    level: "%5p [trace:%X{traceId}]"
 
