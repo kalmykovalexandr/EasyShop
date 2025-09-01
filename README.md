@@ -19,6 +19,15 @@ Backend modules resolve internal artifacts from the Maven repository URL
 specified by `MAVEN_REPO_URL` in your `.env`. To point the build to a new
 repository, update this variable.
 
+## Production setup
+
+On the server, copy the example environment file and fill in the values:
+
+```bash
+cp infra/prod/.env.example infra/prod/.env
+# edit infra/prod/.env with real values
+```
+
 ## Build image versioning
 
 The shared build image `easyshop-build-base` is tagged with a semantic
