@@ -16,7 +16,7 @@
     <repositories>
         <repository>
             <id>github</id>
-            <url>https://maven.pkg.github.com/EasyShopOrg/EasyShop</url>
+            <url>${repo.url}</url>
             <releases>
                 <enabled>true</enabled>
             </releases>

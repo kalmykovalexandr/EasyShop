@@ -13,6 +13,12 @@ DOCKER_BUILDKIT=1 docker compose -f infra/dev/docker-compose.dev.yml up --build
 
 > Docker builds require BuildKit. Ensure `DOCKER_BUILDKIT=1` is set when building images.
 
+## Maven repository
+
+Backend modules resolve internal artifacts from the Maven repository URL
+specified by `MAVEN_REPO_URL` in your `.env`. To point the build to a new
+repository, update this variable.
+
 ## Build image versioning
 
 The shared build image `easyshop-build-base` is tagged with a semantic

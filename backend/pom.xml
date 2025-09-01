@@ -23,6 +23,7 @@
         <java.version>21</java.version>
         <spring-boot.version>3.3.3</spring-boot.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
+        <repo.url>${env.MAVEN_REPO_URL}</repo.url>
     </properties>
 
     <!-- Spring Boot BOM drives versions of starters and many libs -->
