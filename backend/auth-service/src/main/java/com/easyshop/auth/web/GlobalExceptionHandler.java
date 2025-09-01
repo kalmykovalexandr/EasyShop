@@ -1,5 +1,6 @@
 package com.easyshop.auth.web;
 
+import com.easyshop.common.web.ApiResponseDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;

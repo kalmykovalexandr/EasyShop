@@ -1,4 +1,4 @@
-package com.easyshop.product.web;
+package com.easyshop.common.web;
 
 public record ApiResponseDto(boolean ok, String message) {
 }
