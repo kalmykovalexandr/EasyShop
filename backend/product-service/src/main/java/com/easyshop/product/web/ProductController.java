@@ -18,12 +18,12 @@ public class ProductController {
     }
 
     @GetMapping("/healthz")
-    public ApiResponseDto h() {
+    public ApiResponseDto health() {
         return new ApiResponseDto(true, null);
     }
 
     @GetMapping("/readyz")
-    public ApiResponseDto r() {
+    public ApiResponseDto ready() {
         return new ApiResponseDto(true, null);
     }
 
@@ -44,19 +44,19 @@ public class ProductController {
     }
 
     @PutMapping("/api/admin/products/{id}")
-    public ResponseEntity<?> upd(@PathVariable Long id, @Valid @RequestBody ProductUpdateDto b) {
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductUpdateDto b) {
         return service.update(id, b)
                 .<ResponseEntity<?>>map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/api/admin/products/{id}")
-    public ResponseEntity<?> del(@PathVariable Long id) {
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
         return service.delete(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 
     @PostMapping("/api/admin/products/{id}/reserve")
-    public ResponseEntity<ApiResponseDto> res(@PathVariable Long id, @RequestParam int qty) {
+    public ResponseEntity<ApiResponseDto> reserveStock(@PathVariable Long id, @RequestParam int qty) {
         return switch (service.reserve(id, qty)) {
             case OK -> ResponseEntity.ok(new ApiResponseDto(true, null));
             case NOT_ENOUGH_STOCK -> ResponseEntity.status(409).body(new ApiResponseDto(false, "Not enough stock"));

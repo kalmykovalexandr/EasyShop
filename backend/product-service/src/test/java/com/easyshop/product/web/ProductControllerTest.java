@@ -28,4 +28,11 @@ class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.ok").value(true));
     }
+
+    @Test
+    void readyEndpointWorks() throws Exception {
+        mvc.perform(get("/readyz"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.ok").value(true));
+    }
 }
