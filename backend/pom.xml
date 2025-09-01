@@ -11,6 +11,7 @@
     <description>Aggregator POM for EasyShop microservices</description>
 
     <modules>
+        <module>common-web</module>
         <module>common-security</module>
         <module>auth-service</module>
         <module>product-service</module>
@@ -37,6 +38,11 @@
             <dependency>
                 <groupId>com.easyshop</groupId>
                 <artifactId>common-security</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.easyshop</groupId>
+                <artifactId>common-web</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

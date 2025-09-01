@@ -1,6 +1,5 @@
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
-
 COPY pom.xml ./pom.xml
 RUN --mount=type=cache,target=/root/.m2 mvn -q -N -DskipTests install
 COPY common-security/pom.xml ./common-security/pom.xml
@@ -8,10 +7,8 @@ COPY common-security/src ./common-security/src
 COPY auth-service/pom.xml ./auth-service/pom.xml
 RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests -f common-security/pom.xml install
 RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests -f auth-service/pom.xml dependency:go-offline
-
 COPY auth-service/src ./auth-service/src
 RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests -f auth-service/pom.xml package
-
 FROM eclipse-temurin:21-jre
 WORKDIR /opt/app
 COPY --from=build /app/auth-service/target/*.jar app.jar
