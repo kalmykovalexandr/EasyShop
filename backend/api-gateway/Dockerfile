@@ -1,4 +1,4 @@
-FROM easyshop-build-base:latest AS build
+FROM easyshop-build-base:1.0.0 AS build
 WORKDIR /app
 COPY api-gateway/pom.xml ./api-gateway/pom.xml
 RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests -f api-gateway/pom.xml dependency:go-offline
