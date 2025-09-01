@@ -7,6 +7,9 @@ COPY pom.xml ./
 COPY common-security ./common-security
 COPY common-web ./common-web
 COPY auth-service ./auth-service
+COPY product-service ./product-service
+COPY order-service ./order-service
+COPY api-gateway ./api-gateway
 RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests -pl auth-service -am package
 FROM eclipse-temurin:21-jre
 WORKDIR /opt/app
