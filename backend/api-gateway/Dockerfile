@@ -1,10 +1,16 @@
-FROM easyshop-build-base:1.0.0 AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 ARG GITHUB_ACTOR
 ARG GITHUB_TOKEN
 WORKDIR /app
-COPY api-gateway/pom.xml ./api-gateway/pom.xml
-COPY api-gateway/src ./api-gateway/src
-RUN mvn -o -q -DskipTests -f api-gateway/pom.xml package
+COPY settings.xml /usr/share/maven/ref/settings.xml
+COPY pom.xml ./
+COPY common-security ./common-security
+COPY common-web ./common-web
+COPY auth-service ./auth-service
+COPY product-service ./product-service
+COPY order-service ./order-service
+COPY api-gateway ./api-gateway
+RUN --mount=type=cache,target=/root/.m2 mvn -q -DskipTests -pl api-gateway -am package
 FROM eclipse-temurin:21-jre
 WORKDIR /opt/app
 COPY --from=build /app/api-gateway/target/*.jar app.jar
