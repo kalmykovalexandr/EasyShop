@@ -10,15 +10,18 @@ spring:
       routes:
         - id: auth
           uri: ${AUTH_URL}
-          predicates: [ Path=/api/auth/**, /healthz, /readyz ]
+          predicates:
+            - Path=/api/auth/**
+            - Path=/healthz
+            - Path=/readyz
         - id: products
           uri: ${PRODUCT_URL}
-          predicates: [Path=/api/products/**]
+          predicates:
+            - Path=/api/products/**
         - id: orders
           uri: ${ORDER_URL}
-          predicates: [Path=/api/orders/**]
-
+          predicates:
+            - Path=/api/orders/**
 logging:
   pattern:
     level: "%5p [trace:%X{traceId}]"
-          
