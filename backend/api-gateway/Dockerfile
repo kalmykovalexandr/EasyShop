@@ -1,4 +1,4 @@
-FROM easyshop-build-base:latest AS build
+FROM easyshop-build-base:1.0.0 AS build
 ARG GITHUB_ACTOR
 ARG GITHUB_TOKEN
 WORKDIR /app
