@@ -1,4 +1,4 @@
-package com.easyshop.common.security;
+package com.easyshop.common.web;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
