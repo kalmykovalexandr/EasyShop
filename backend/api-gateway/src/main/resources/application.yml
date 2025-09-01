@@ -1,5 +1,6 @@
 server: { port: 8080 }
 spring:
+  application: { name: api-gateway }
   cloud:
     gateway:
       routes:
@@ -12,4 +13,8 @@ spring:
         - id: orders
           uri: ${ORDER_URL:http://order-service:9003}
           predicates: [ Path=/api/orders/** ]
+
+logging:
+  pattern:
+    level: "%5p [trace:%X{traceId}]"
           

@@ -1,5 +1,6 @@
 server: { port: 9003 }
 spring:
+  application: { name: order-service }
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/postgres}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
@@ -9,4 +10,8 @@ spring:
 jwt: { "secret": "${JWT_SECRET:change-me}","ttlMinutes": 60 }
 product:
   base-url: ${PRODUCT_BASE_URL:http://product-service:9002}
+
+logging:
+  pattern:
+    level: "%5p [trace:%X{traceId}]"
 

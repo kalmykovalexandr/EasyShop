@@ -35,13 +35,13 @@ public class OrderController {
     }
 
     @GetMapping("/healthz")
-    public Map<String, Object> health() {
-        return Map.of("ok", true);
+    public ApiResponseDto health() {
+        return new ApiResponseDto(true, null);
     }
 
     @GetMapping("/readyz")
-    public Map<String, Object> ready() {
-        return Map.of("ok", true);
+    public ApiResponseDto ready() {
+        return new ApiResponseDto(true, null);
     }
 
     @GetMapping("/api/orders")
