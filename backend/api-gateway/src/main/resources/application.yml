@@ -10,14 +10,16 @@ spring:
           uri: http://auth-service:9001
           predicates:
             - Path=/api/auth/**
-        - id: orders
-          uri: http://order-service:9002
-          predicates:
-            - Path=/api/orders/**
         - id: products
-          uri: http://product-service:9003
+          uri: http://product-service:9002
           predicates:
             - Path=/api/products/**
+        - id: orders
+          uri: http://order-service:9003
+          predicates:
+            - Path=/api/orders/**
+jwt:
+  secret: ${JWT_SECRET}
 logging:
   pattern:
     level: "%5p [trace:%X{traceId}]"
