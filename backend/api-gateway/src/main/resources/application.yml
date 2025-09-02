@@ -7,17 +7,19 @@ spring:
     gateway:
       routes:
         - id: auth
-          uri: http://auth-service:9001
+          uri: ${AUTH_URL:http://auth-service:9001}
           predicates:
             - Path=/api/auth/**
-        - id: orders
-          uri: http://order-service:9002
-          predicates:
-            - Path=/api/orders/**
         - id: products
-          uri: http://product-service:9003
+          uri: ${PRODUCT_URL:http://product-service:9002}
           predicates:
             - Path=/api/products/**
+        - id: orders
+          uri: ${ORDER_URL:http://order-service:9003}
+          predicates:
+            - Path=/api/orders/**
+jwt:
+  secret: ${JWT_SECRET}
 logging:
   pattern:
     level: "%5p [trace:%X{traceId}]"
