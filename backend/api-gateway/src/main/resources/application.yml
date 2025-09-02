@@ -7,15 +7,15 @@ spring:
     gateway:
       routes:
         - id: auth
-          uri: ${AUTH_URL:http://auth-service:9001}
+          uri: http://auth-service:9001
           predicates:
             - Path=/api/auth/**
         - id: products
-          uri: ${PRODUCT_URL:http://product-service:9002}
+          uri: http://product-service:9002
           predicates:
             - Path=/api/products/**
         - id: orders
-          uri: ${ORDER_URL:http://order-service:9003}
+          uri: http://order-service:9003
           predicates:
             - Path=/api/orders/**
 jwt:
