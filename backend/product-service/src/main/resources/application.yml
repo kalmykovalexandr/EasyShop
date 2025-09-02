@@ -1,0 +1,24 @@
+server:
+  port: 9002
+spring:
+  application:
+    name: product-service
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: easyshop
+  flyway:
+    locations: classpath:db/migration
+    default-schema: easyshop
+    enabled: true
+jwt:
+  secret: ${JWT_SECRET}
+logging:
+  pattern:
+    level: "%5p [trace:%X{traceId}]"
