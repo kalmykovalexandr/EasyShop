@@ -7,19 +7,17 @@ spring:
     gateway:
       routes:
         - id: auth
-          uri: http://auth-service:8080
+          uri: http://auth-service:9001
           predicates:
             - Path=/api/auth/**
-            - Path=/healthz
-            - Path=/readyz
-        - id: products
-          uri: http://product-service:9002
-          predicates:
-            - Path=/api/products/**
         - id: orders
-          uri: http://order-service:9003
+          uri: http://order-service:9002
           predicates:
             - Path=/api/orders/**
+        - id: products
+          uri: http://product-service:9003
+          predicates:
+            - Path=/api/products/**
 logging:
   pattern:
     level: "%5p [trace:%X{traceId}]"
