@@ -1,0 +1,25 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: auth-service
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: easyshop
+  flyway:
+    locations: classpath:db/migration
+    default-schema: easyshop
+    enabled: true
+jwt:
+  secret: ${JWT_SECRET}
+  ttlMinutes: ${JWT_TTL_MINUTES:60}
+logging:
+  pattern:
+    level: "%5p [trace:%X{traceId}]"
