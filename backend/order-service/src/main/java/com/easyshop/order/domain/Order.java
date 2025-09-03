@@ -8,7 +8,7 @@ import java.time.*;
 import java.util.*;
 
 @Entity
-@Table(name = "orders", schema = "easyshop")
+@Table(name = "orders")
 @Getter
 @Setter
 @NoArgsConstructor

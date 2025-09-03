@@ -6,7 +6,7 @@ import lombok.*;
 import java.math.*;
 
 @Entity
-@Table(name = "order_items", schema = "easyshop")
+@Table(name = "order_items")
 @Getter
 @Setter
 @NoArgsConstructor
