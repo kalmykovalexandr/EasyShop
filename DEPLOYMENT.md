@@ -15,7 +15,7 @@ GitHub Repository → GitHub Actions → Oracle Cloud Server
 ### 1. Oracle Cloud Server
 - Создайте виртуальную машину в Oracle Cloud
 - Рекомендуемая конфигурация: 2 vCPU, 4GB RAM, 50GB storage
-- Операционная система: Oracle Linux 8 или CentOS 8
+- Операционная система: Ubuntu 20.04/22.04, Oracle Linux 8 или CentOS 8
 - Откройте порты: 22, 80, 8080, 9001-9003, 5432
 
 ### 2. GitHub Repository
@@ -26,15 +26,24 @@ GitHub Repository → GitHub Actions → Oracle Cloud Server
 
 ### Шаг 1: Подключение к серверу
 ```bash
+# Для Ubuntu
+ssh ubuntu@your-oracle-server-ip
+
+# Для Oracle Linux
 ssh opc@your-oracle-server-ip
 ```
 
 ### Шаг 2: Запуск скрипта настройки
 ```bash
-# Скачайте и запустите скрипт настройки
+# Для Ubuntu
 curl -O https://raw.githubusercontent.com/your-username/EasyShop/main/infra/setup-oracle-server.sh
 chmod +x setup-oracle-server.sh
 ./setup-oracle-server.sh
+
+# Для Oracle Linux/CentOS
+curl -O https://raw.githubusercontent.com/your-username/EasyShop/main/infra/setup-oracle-server-centos.sh
+chmod +x setup-oracle-server-centos.sh
+./setup-oracle-server-centos.sh
 ```
 
 ### Шаг 3: Клонирование репозитория
@@ -59,7 +68,7 @@ git clone https://github.com/your-username/EasyShop.git .
 
 ### Oracle Cloud Secrets
 - `ORACLE_HOST` - IP адрес вашего Oracle Cloud сервера
-- `ORACLE_USERNAME` - имя пользователя (обычно `opc`)
+- `ORACLE_USERNAME` - имя пользователя (`ubuntu` для Ubuntu, `opc` для Oracle Linux)
 - `ORACLE_SSH_KEY` - приватный SSH ключ для подключения к серверу
 - `ORACLE_PORT` - SSH порт (по умолчанию: 22)
 - `ORACLE_APP_PATH` - путь к приложению на сервере (по умолчанию: `/opt/easyshop`)

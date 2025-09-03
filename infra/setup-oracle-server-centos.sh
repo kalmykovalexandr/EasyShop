@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Oracle Cloud Server Setup Script
+# Oracle Cloud Server Setup Script (Oracle Linux/CentOS)
 # Run this script on your Oracle Cloud instance to prepare it for EasyShop deployment
 
 set -e
@@ -9,15 +9,13 @@ echo "🚀 Setting up Oracle Cloud server for EasyShop deployment..."
 
 # Update system packages
 echo "📦 Updating system packages..."
-sudo apt update && sudo apt upgrade -y
+sudo yum update -y
 
 # Install Docker
 echo "🐳 Installing Docker..."
-sudo apt install -y apt-transport-https ca-certificates curl gnupg lsb-release
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo systemctl start docker
 sudo systemctl enable docker
 
@@ -26,7 +24,7 @@ sudo usermod -aG docker $USER
 
 # Install Git
 echo "📁 Installing Git..."
-sudo apt install -y git
+sudo yum install -y git
 
 # Create application directory
 echo "📂 Creating application directory..."
@@ -40,14 +38,14 @@ echo "git clone https://github.com/your-username/EasyShop.git /opt/easyshop"
 
 # Configure firewall
 echo "🔥 Configuring firewall..."
-sudo ufw allow 22/tcp
-sudo ufw allow 80/tcp
-sudo ufw allow 8080/tcp
-sudo ufw allow 9001/tcp
-sudo ufw allow 9002/tcp
-sudo ufw allow 9003/tcp
-sudo ufw allow 5432/tcp
-sudo ufw --force enable
+sudo firewall-cmd --permanent --add-port=22/tcp
+sudo firewall-cmd --permanent --add-port=80/tcp
+sudo firewall-cmd --permanent --add-port=8080/tcp
+sudo firewall-cmd --permanent --add-port=9001/tcp
+sudo firewall-cmd --permanent --add-port=9002/tcp
+sudo firewall-cmd --permanent --add-port=9003/tcp
+sudo firewall-cmd --permanent --add-port=5432/tcp
+sudo firewall-cmd --reload
 
 # Create systemd service for EasyShop
 echo "⚙️ Creating systemd service..."
