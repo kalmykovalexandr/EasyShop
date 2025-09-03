@@ -1,0 +1,23 @@
+server:
+  port: 9003
+spring:
+  application:
+    name: purchase-service
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA:purchases}
+jwt:
+  secret: ${JWT_SECRET}
+product:
+  service:
+    url: ${PRODUCT_SERVICE_URL:http://product-service:9002}
+logging:
+  pattern:
+    level: "%5p [trace:%X{traceId}]"

@@ -8,7 +8,7 @@ export default function Shop(){
   useEffect(()=>{ api('/products').then(setList).catch(e=>alert(e.message)) },[])
   async function buyOne(p){
     if (!getToken()){ alert(t('shop.login_first')); return }
-    try{ await api('/orders/checkout', { method:'POST', body: JSON.stringify({ items: [{ productId: p.id, quantity: 1 }] }) }); alert(t('shop.order_done')) }
+    try{ await api('/purchases/checkout', { method:'POST', body: JSON.stringify({ items: [{ productId: p.id, quantity: 1 }] }) }); alert(t('shop.order_done')) }
     catch(e){ alert(e.message) }
   }
   return (

@@ -1,7 +1,7 @@
 # EasyShop (monorepo)
 
 ## Stack
-- Java 21, Spring Boot (auth/product/order + api-gateway)
+- Java 21, Spring Boot (auth/product/purchase + api-gateway)
 - React + Vite
 - Postgres
 - Docker Compose (dev/prod)
@@ -32,8 +32,8 @@ Backend services read configuration from environment variables. Provide them via
 - `JWT_TTL_MINUTES` – token lifetime in minutes (defaults to `60`).
 - `AUTH_URL` – base URL of the auth service for the API gateway.
 - `PRODUCT_URL` – base URL of the product service for the API gateway.
-- `ORDER_URL` – base URL of the order service for the API gateway.
-- `PRODUCT_BASE_URL` – product service URL used by the order service.
+- `PURCHASE_URL` – base URL of the purchase service for the API gateway.
+- `PRODUCT_BASE_URL` – product service URL used by the purchase service.
 
 ## Production setup
 

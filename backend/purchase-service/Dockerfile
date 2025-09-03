@@ -9,12 +9,12 @@ COPY auth-service/pom.xml ./auth-service/pom.xml
 COPY product-service/pom.xml ./product-service/pom.xml
 COPY purchase-service/pom.xml ./purchase-service/pom.xml
 
-RUN mvn -B -q -ntp -DskipTests -pl product-service -am dependency:go-offline
+RUN mvn -B -q -ntp -DskipTests -pl purchase-service -am dependency:go-offline
 COPY . .
-RUN mvn -B -ntp -DskipTests -pl product-service -am package
+RUN mvn -B -ntp -DskipTests -pl purchase-service -am package
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY --from=build /src/product-service/target/app.jar /app/app.jar
+COPY --from=build /src/purchase-service/target/app.jar /app/app.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/app/app.jar"]

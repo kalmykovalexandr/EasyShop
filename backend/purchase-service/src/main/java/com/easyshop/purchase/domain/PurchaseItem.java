@@ -1,4 +1,4 @@
-package com.easyshop.product.domain;
+package com.easyshop.purchase.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -6,21 +6,21 @@ import lombok.*;
 import java.math.*;
 
 @Entity
-@Table(name = "product")
+@Table(name = "purchase_item")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Product {
+public class PurchaseItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "purchase_id")
+    Purchase purchase;
+    Long productId;
     String name;
-    String description;
-    @Column(nullable = false)
     BigDecimal price;
-    @Column(nullable = false)
-    Integer stock;
+    Integer quantity;
 }

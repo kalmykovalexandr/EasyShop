@@ -14,10 +14,10 @@ spring:
           uri: http://product-service:9002
           predicates:
             - Path=/api/products/**
-        - id: orders
-          uri: http://order-service:9003
+        - id: purchases
+          uri: http://purchase-service:9003
           predicates:
-            - Path=/api/orders/**
+            - Path=/api/purchases/**
 jwt:
   secret: ${JWT_SECRET}
 logging:

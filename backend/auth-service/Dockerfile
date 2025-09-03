@@ -7,7 +7,7 @@ COPY common-security/pom.xml ./common-security/pom.xml
 COPY api-gateway/pom.xml ./api-gateway/pom.xml
 COPY auth-service/pom.xml ./auth-service/pom.xml
 COPY product-service/pom.xml ./product-service/pom.xml
-COPY order-service/pom.xml ./order-service/pom.xml
+COPY purchase-service/pom.xml ./purchase-service/pom.xml
 
 RUN mvn -B -q -ntp -DskipTests -pl auth-service -am dependency:go-offline
 COPY . .

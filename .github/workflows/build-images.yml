@@ -40,10 +40,10 @@ jobs:
         run: |
           docker build -t product-service:${IMAGE_VERSION} backend/product-service
           docker push product-service:${IMAGE_VERSION}
-      - name: Build and push order service image
+      - name: Build and push purchase service image
         run: |
-          docker build -t order-service:${IMAGE_VERSION} backend/order-service
-          docker push order-service:${IMAGE_VERSION}
+          docker build -t purchase-service:${IMAGE_VERSION} backend/purchase-service
+          docker push purchase-service:${IMAGE_VERSION}
       - name: Build and push API gateway image
         run: |
           docker build -t api-gateway:${IMAGE_VERSION} backend/api-gateway
