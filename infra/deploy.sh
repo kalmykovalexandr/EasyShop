@@ -42,13 +42,7 @@ fi
 
 # Check for .env file
 if [ ! -f "../.env" ]; then
-    warning ".env file not found! Using default values from env.prod.example"
-    if [ -f "env.prod.example" ]; then
-        cp env.prod.example ../.env
-        print "Created .env file from env.prod.example"
-    else
-        error "env.prod.example file not found! Please create .env file manually"
-    fi
+    error ".env file not found! Please create it manually with your actual values"
 fi
 
 # Load environment variables
