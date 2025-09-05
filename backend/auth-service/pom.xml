@@ -28,10 +28,6 @@
         </dependency>
         <dependency>
             <groupId>com.easyshop</groupId>
-            <artifactId>common-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.easyshop</groupId>
             <artifactId>common-web</artifactId>
         </dependency>
         <dependency>
