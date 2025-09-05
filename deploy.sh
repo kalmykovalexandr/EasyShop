@@ -107,7 +107,7 @@ services:
       SPRING_FLYWAY_SCHEMAS: auth
       SPRING_FLYWAY_DEFAULT_SCHEMA: auth
       SPRING_FLYWAY_CREATE_SCHEMAS: "true"
-      JWT_SECRET: your-super-secret-jwt-key-here-minimum-32-characters
+      JWT_SECRET: c3VwZXItc2VjcmV0LWp3dC1rZXktZm9yLWVhc3lzaG9wLWFwcGxpY2F0aW9uLW1pbmltdW0tMzItY2hhcmFjdGVycw==
       JWT_TTL_MINUTES: 60
     depends_on:
       db: { condition: service_healthy }
@@ -124,7 +124,7 @@ services:
       SPRING_FLYWAY_SCHEMAS: products
       SPRING_FLYWAY_DEFAULT_SCHEMA: products
       SPRING_FLYWAY_CREATE_SCHEMAS: "true"
-      JWT_SECRET: your-super-secret-jwt-key-here-minimum-32-characters
+      JWT_SECRET: c3VwZXItc2VjcmV0LWp3dC1rZXktZm9yLWVhc3lzaG9wLWFwcGxpY2F0aW9uLW1pbmltdW0tMzItY2hhcmFjdGVycw==
     depends_on:
       db: { condition: service_healthy }
     ports:
@@ -140,7 +140,7 @@ services:
       SPRING_FLYWAY_SCHEMAS: purchases
       SPRING_FLYWAY_DEFAULT_SCHEMA: purchases
       SPRING_FLYWAY_CREATE_SCHEMAS: "true"
-      JWT_SECRET: your-super-secret-jwt-key-here-minimum-32-characters
+      JWT_SECRET: c3VwZXItc2VjcmV0LWp3dC1rZXktZm9yLWVhc3lzaG9wLWFwcGxpY2F0aW9uLW1pbmltdW0tMzItY2hhcmFjdGVycw==
       JWT_TTL_MINUTES: 60
       PRODUCT_SERVICE_URL: http://product-service:9002
     depends_on:
@@ -155,7 +155,7 @@ services:
       AUTH_URL: http://auth-service:9001
       PRODUCT_URL: http://product-service:9002
       PURCHASE_URL: http://purchase-service:9003
-      JWT_SECRET: your-super-secret-jwt-key-here-minimum-32-characters
+      JWT_SECRET: c3VwZXItc2VjcmV0LWp3dC1rZXktZm9yLWVhc3lzaG9wLWFwcGxpY2F0aW9uLW1pbmltdW0tMzItY2hhcmFjdGVycw==
     depends_on:
       auth-service: { condition: service_started }
       product-service: { condition: service_started }
