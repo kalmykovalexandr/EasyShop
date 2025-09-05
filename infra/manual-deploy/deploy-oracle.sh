@@ -80,6 +80,8 @@ print_header() {
 # Check if we are in the correct directory
 if [ ! -f "../backend/pom.xml" ] || [ ! -f "../frontend/package.json" ]; then
     print_error "Please run this script from the infra/manual-deploy/ directory"
+    print_error "Current directory: $(pwd)"
+    print_error "Looking for: ../backend/pom.xml and ../frontend/package.json"
     exit 1
 fi
 
