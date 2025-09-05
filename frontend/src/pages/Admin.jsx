@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { api } from '../lib/api'
 import { useTranslation } from 'react-i18next'
+import ProtectedRoute from '../components/ProtectedRoute'
 
-export default function Admin(){
+function AdminContent(){
   const { t } = useTranslation()
   const [list,setList]=useState([])
   async function load(){ try{ const l = await api('/products'); setList(l) } catch(e){ alert(e.message) } }
@@ -49,5 +50,13 @@ export default function Admin(){
         </table>
       </div>
     </div>
+  )
+}
+
+export default function Admin(){
+  return (
+    <ProtectedRoute requiredRole="ADMIN">
+      <AdminContent />
+    </ProtectedRoute>
   )
 }

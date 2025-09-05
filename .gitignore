@@ -23,3 +23,11 @@ infra/prod/.env
 backend/*/.env
 
 infra/prod/.env
+
+# SSH Keys
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+ssh_keys/
+.ssh/

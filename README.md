@@ -44,17 +44,17 @@ cp infra/prod/.env.example infra/prod/.env
 # edit infra/prod/.env with real values
 ```
 
-## Сборка и запуск
+## Build and Run
 
-Перед сборкой установите переменные окружения `GITHUB_ACTOR` и `GITHUB_TOKEN`.
+Before building, set environment variables `GITHUB_ACTOR` and `GITHUB_TOKEN`.
 
 ```bash
 DOCKER_BUILDKIT=1 docker compose --env-file infra/prod/.env -f infra/prod/docker-compose.prod.yml build
 ```
 
-## Сборка микросервисов отдельно
+## Build Microservices Separately
 
-Для сборки конкретного сервиса используйте Maven, указывая его модуль. Например, для `auth-service`:
+To build a specific service, use Maven specifying its module. For example, for `auth-service`:
 
 ```bash
 mvn -f backend/pom.xml -pl auth-service -am package

@@ -8,11 +8,18 @@ import com.easyshop.auth.web.LoginResponseDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Pattern;
+
 @Service
 public class AuthService {
     private final UserRepository users;
     private final PasswordEncoder enc;
     private final JwtService jwt;
+
+    // Password validation patterns
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile(
+        "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"
+    );
 
     public AuthService(UserRepository users, PasswordEncoder enc, JwtService jwt) {
         this.users = users;
@@ -24,8 +31,14 @@ public class AuthService {
         if (users.existsByEmail(d.email())) {
             return false;
         }
+        
+        // Validate password strength
+        if (!isValidPassword(d.password())) {
+            return false;
+        }
+        
         users.save(User.builder()
-                .email(d.email())
+                .email(d.email().toLowerCase().trim())
                 .passwordHash(enc.encode(d.password()))
                 .role("USER")
                 .build());
@@ -33,11 +46,44 @@ public class AuthService {
     }
 
     public LoginResponseDto login(AuthDto d) {
-        var u = users.findByEmail(d.email()).orElse(null);
+        var u = users.findByEmail(d.email().toLowerCase().trim()).orElse(null);
         if (u == null || !enc.matches(d.password(), u.getPasswordHash())) {
             return null;
         }
-        String t = jwt.create(u.getEmail(), u.getRole());
-        return new LoginResponseDto(t, u.getEmail(), u.getRole());
+        
+        String accessToken = jwt.create(u.getEmail(), u.getRole());
+        String refreshToken = jwt.createRefreshToken(u.getEmail());
+        
+        return new LoginResponseDto(accessToken, refreshToken, u.getEmail(), u.getRole());
+    }
+
+    public boolean validateToken(String token) {
+        return jwt.validateToken(token);
+    }
+
+    public String refreshToken(String refreshToken) {
+        if (!jwt.validateToken(refreshToken)) {
+            return null;
+        }
+        
+        String email = jwt.getSubject(refreshToken);
+        var user = users.findByEmail(email).orElse(null);
+        if (user == null) {
+            return null;
+        }
+        
+        return jwt.create(user.getEmail(), user.getRole());
+    }
+
+    private boolean isValidPassword(String password) {
+        if (password == null || password.length() < 8) {
+            return false;
+        }
+        
+        return PASSWORD_PATTERN.matcher(password).matches();
+    }
+
+    public String getPasswordValidationMessage() {
+        return "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character (@$!%*?&)";
     }
 }

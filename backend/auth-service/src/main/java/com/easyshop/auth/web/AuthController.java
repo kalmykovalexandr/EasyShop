@@ -26,9 +26,12 @@ public class AuthController {
 
     @PostMapping("/api/auth/register")
     public ResponseEntity<ApiResponseDto> register(@Valid @RequestBody AuthDto d) {
-        if (!service.register(d))
-            return ResponseEntity.badRequest().body(new ApiResponseDto(false, "Email already used"));
-        return ResponseEntity.ok(new ApiResponseDto(true, null));
+        if (!service.register(d)) {
+            String message = "Email already used or password does not meet requirements. " + 
+                           service.getPasswordValidationMessage();
+            return ResponseEntity.badRequest().body(new ApiResponseDto(false, message));
+        }
+        return ResponseEntity.ok(new ApiResponseDto(true, "Registration successful"));
     }
 
     @PostMapping("/api/auth/login")
@@ -39,8 +42,31 @@ public class AuthController {
         return ResponseEntity.ok(resp);
     }
 
+    @PostMapping("/api/auth/refresh")
+    public ResponseEntity<?> refresh(@RequestBody RefreshTokenDto d) {
+        String newToken = service.refreshToken(d.refreshToken());
+        if (newToken == null)
+            return ResponseEntity.badRequest().body(new ApiResponseDto(false, "Invalid refresh token"));
+        return ResponseEntity.ok(new TokenResponseDto(newToken));
+    }
+
+    @PostMapping("/api/auth/logout")
+    public ResponseEntity<ApiResponseDto> logout() {
+        // In a real implementation, you would blacklist the token
+        return ResponseEntity.ok(new ApiResponseDto(true, "Logged out successfully"));
+    }
+
     @GetMapping("/api/auth/verify")
     public ResponseEntity<ApiResponseDto> verify() {
         return ResponseEntity.ok(new ApiResponseDto(true, null));
     }
+
+    @GetMapping("/api/auth/password-requirements")
+    public ResponseEntity<ApiResponseDto> getPasswordRequirements() {
+        return ResponseEntity.ok(new ApiResponseDto(true, service.getPasswordValidationMessage()));
+    }
+
+    // DTOs for new endpoints
+    public record RefreshTokenDto(String refreshToken) {}
+    public record TokenResponseDto(String token) {}
 }
