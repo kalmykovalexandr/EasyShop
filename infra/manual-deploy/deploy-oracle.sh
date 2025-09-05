@@ -31,11 +31,11 @@ DOCKER_COMPOSE_FILE="../docker-compose.prod.yml"
 
 # Available services mapping
 declare -A SERVICES=(
-    ["auth-service"]="easyshop-auth-service:latest ../backend/auth-service/Dockerfile ../backend/"
-    ["product-service"]="easyshop-product-service:latest ../backend/product-service/Dockerfile ../backend/"
-    ["purchase-service"]="easyshop-purchase-service:latest ../backend/purchase-service/Dockerfile ../backend/"
-    ["api-gateway"]="easyshop-api-gateway:latest ../backend/api-gateway/Dockerfile ../backend/"
-    ["frontend"]="easyshop-frontend:latest ../frontend/Dockerfile ../frontend/"
+    ["auth-service"]="easyshop-auth-service:latest ../../backend/auth-service/Dockerfile ../../backend/"
+    ["product-service"]="easyshop-product-service:latest ../../backend/product-service/Dockerfile ../../backend/"
+    ["purchase-service"]="easyshop-purchase-service:latest ../../backend/purchase-service/Dockerfile ../../backend/"
+    ["api-gateway"]="easyshop-api-gateway:latest ../../backend/api-gateway/Dockerfile ../../backend/"
+    ["frontend"]="easyshop-frontend:latest ../../frontend/Dockerfile ../../frontend/"
 )
 
 # Parse command line arguments
@@ -78,10 +78,10 @@ print_header() {
 }
 
 # Check if we are in the correct directory
-if [ ! -f "../backend/pom.xml" ] || [ ! -f "../frontend/package.json" ]; then
+if [ ! -f "../../backend/pom.xml" ] || [ ! -f "../../frontend/package.json" ]; then
     print_error "Please run this script from the infra/manual-deploy/ directory"
     print_error "Current directory: $(pwd)"
-    print_error "Looking for: ../backend/pom.xml and ../frontend/package.json"
+    print_error "Looking for: ../../backend/pom.xml and ../../frontend/package.json"
     exit 1
 fi
 
