@@ -24,8 +24,10 @@ export async function api(path, options={}){
   if (response.status === 401) {
     // Token expired or invalid
     removeToken()
-    // Redirect to login page
-    if (window.location.pathname !== '/account') {
+    // Only redirect to login page if we're not on a public page
+    // Public pages: /, /shop, /account (for login/register)
+    const publicPaths = ['/', '/shop', '/account']
+    if (!publicPaths.includes(window.location.pathname)) {
       window.location.href = '/account'
     }
     throw new Error('Authentication required')

@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null)
 
   // Check if user is authenticated
-  const isAuthenticated = () => {
+  const checkAuthentication = () => {
     const token = getToken()
     if (!token) return false
     
@@ -41,6 +41,9 @@ export const AuthProvider = ({ children }) => {
       return false
     }
   }
+
+  // Current authentication status
+  const isAuthenticated = checkAuthentication()
 
   // Get user role from token
   const getUserRole = () => {
@@ -131,7 +134,7 @@ export const AuthProvider = ({ children }) => {
     const initAuth = async () => {
       setLoading(true)
       
-      if (isAuthenticated()) {
+      if (isAuthenticated) {
         const email = getUserEmail()
         const role = getUserRole()
         
@@ -151,7 +154,7 @@ export const AuthProvider = ({ children }) => {
   // Auto-logout on token expiration
   useEffect(() => {
     const checkTokenExpiration = () => {
-      if (user && !isAuthenticated()) {
+      if (user && !checkAuthentication()) {
         logout()
       }
     }
@@ -166,7 +169,7 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     error,
-    isAuthenticated: isAuthenticated(),
+    isAuthenticated,
     login,
     register,
     logout,

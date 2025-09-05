@@ -19,7 +19,7 @@ services:
   auth-service:
     image: ${DOCKER_REGISTRY}/auth-service:${IMAGE_VERSION}
     environment:
-      DB_URL: jdbc:postgresql://db:5432/easyshop
+      DB_URL: ${DB_URL}
       SPRING_DATASOURCE_URL: ${DB_URL}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
@@ -40,7 +40,7 @@ services:
   product-service:
     image: ${DOCKER_REGISTRY}/product-service:${IMAGE_VERSION}
     environment:
-      DB_URL: jdbc:postgresql://db:5432/easyshop
+      DB_URL: ${DB_URL}
       SPRING_DATASOURCE_URL: ${DB_URL}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
@@ -60,7 +60,7 @@ services:
   purchase-service:
     image: ${DOCKER_REGISTRY}/purchase-service:${IMAGE_VERSION}
     environment:
-      DB_URL: jdbc:postgresql://db:5432/easyshop
+      DB_URL: ${DB_URL}
       SPRING_DATASOURCE_URL: ${DB_URL}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
