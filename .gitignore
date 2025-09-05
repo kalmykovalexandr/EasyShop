@@ -27,6 +27,7 @@ infra/prod/.env
 # SSH Keys
 *.pem
 *.key
+*.pub
 id_rsa*
 id_ed25519*
 ssh_keys/
