@@ -16,5 +16,6 @@ RUN mvn -B -ntp -DskipTests -pl api-gateway -am package
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /src/api-gateway/target/app.jar /app/app.jar
+COPY --from=build /src/api-gateway/src/main/resources/application.yml /app/application.yml
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/app/app.jar"]
+ENTRYPOINT ["java","-jar","/app/app.jar","--spring.config.location=classpath:/application.yml,/app/application.yml"]
