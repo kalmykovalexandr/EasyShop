@@ -32,7 +32,7 @@ public class JwtService {
                 .claim("type", "access")
                 .issuedAt(now)
                 .expiration(expiration)
-                .signWith(key(), Jwts.SIG.HS256)
+                .signWith(key())
                 .compact();
     }
 
@@ -45,7 +45,7 @@ public class JwtService {
                 .claim("type", "refresh")
                 .issuedAt(now)
                 .expiration(expiration)
-                .signWith(key(), Jwts.SIG.HS256)
+                .signWith(key())
                 .compact();
     }
 
