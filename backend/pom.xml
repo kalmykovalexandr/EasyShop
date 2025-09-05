@@ -38,7 +38,6 @@
 
     <modules>
         <module>common-web</module>
-        <module>common-security</module>
         <module>auth-service</module>
         <module>product-service</module>
         <module>purchase-service</module>
@@ -68,11 +67,6 @@
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.easyshop</groupId>
-                <artifactId>common-security</artifactId>
-                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.easyshop</groupId>
