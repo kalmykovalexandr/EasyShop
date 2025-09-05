@@ -27,12 +27,12 @@ public class JwtService {
         Date expiration = new Date(now.getTime() + ttl * 60 * 1000);
         
         return Jwts.builder()
-                .setSubject(sub)
+                .subject(sub)
                 .claim("role", role)
                 .claim("type", "access")
-                .setIssuedAt(now)
-                .setExpiration(expiration)
-                .signWith(key(), SignatureAlgorithm.HS256)
+                .issuedAt(now)
+                .expiration(expiration)
+                .signWith(key(), Jwts.SIG.HS256)
                 .compact();
     }
 
@@ -41,20 +41,20 @@ public class JwtService {
         Date expiration = new Date(now.getTime() + refreshTtl * 60 * 1000);
         
         return Jwts.builder()
-                .setSubject(sub)
+                .subject(sub)
                 .claim("type", "refresh")
-                .setIssuedAt(now)
-                .setExpiration(expiration)
-                .signWith(key(), SignatureAlgorithm.HS256)
+                .issuedAt(now)
+                .expiration(expiration)
+                .signWith(key(), Jwts.SIG.HS256)
                 .compact();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(key())
+            Jwts.parser()
+                    .verifyWith(key())
                     .build()
-                    .parseClaimsJws(token);
+                    .parseSignedClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             return false;
@@ -63,11 +63,11 @@ public class JwtService {
 
     public String getSubject(String token) {
         try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key())
+            Claims claims = Jwts.parser()
+                    .verifyWith(key())
                     .build()
-                    .parseClaimsJws(token)
-                    .getBody();
+                    .parseSignedClaims(token)
+                    .getPayload();
             return claims.getSubject();
         } catch (JwtException | IllegalArgumentException e) {
             return null;
@@ -76,11 +76,11 @@ public class JwtService {
 
     public String getRole(String token) {
         try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key())
+            Claims claims = Jwts.parser()
+                    .verifyWith(key())
                     .build()
-                    .parseClaimsJws(token)
-                    .getBody();
+                    .parseSignedClaims(token)
+                    .getPayload();
             return claims.get("role", String.class);
         } catch (JwtException | IllegalArgumentException e) {
             return null;
@@ -89,11 +89,11 @@ public class JwtService {
 
     public boolean isTokenExpired(String token) {
         try {
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key())
+            Claims claims = Jwts.parser()
+                    .verifyWith(key())
                     .build()
-                    .parseClaimsJws(token)
-                    .getBody();
+                    .parseSignedClaims(token)
+                    .getPayload();
             return claims.getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
             return true;

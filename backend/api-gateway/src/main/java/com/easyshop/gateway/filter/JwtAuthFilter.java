@@ -3,6 +3,7 @@ package com.easyshop.gateway.filter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -29,7 +30,7 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
 
     private final SecretKey key;
 
-    public JwtAuthFilter(String secret) {
+    public JwtAuthFilter(@Value("${jwt.secret}") String secret) {
         this.key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
     }
 
@@ -43,11 +44,11 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
 
         try {
             String token = authHeader.substring(7);
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
+            Claims claims = Jwts.parser()
+                    .verifyWith(key)
                     .build()
-                    .parseClaimsJws(token)
-                    .getBody();
+                    .parseSignedClaims(token)
+                    .getPayload();
 
             String role = claims.get("role", String.class);
             String username = claims.get("username", String.class);
