@@ -3,7 +3,6 @@ WORKDIR /src
 
 COPY pom.xml ./pom.xml
 COPY common-web/pom.xml ./common-web/pom.xml
-COPY common-security/pom.xml ./common-security/pom.xml
 COPY api-gateway/pom.xml ./api-gateway/pom.xml
 COPY auth-service/pom.xml ./auth-service/pom.xml
 COPY product-service/pom.xml ./product-service/pom.xml
