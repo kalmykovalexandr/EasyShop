@@ -85,14 +85,14 @@ services:
     image: postgres:16
     environment:
       POSTGRES_DB: easyshop
-      POSTGRES_USER: easyshop_user
-      POSTGRES_PASSWORD: easyshop_password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U easyshop_user -d easyshop"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d easyshop"]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -102,8 +102,8 @@ services:
     environment:
       DB_URL: jdbc:postgresql://db:5432/easyshop
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/easyshop
-      SPRING_DATASOURCE_USERNAME: easyshop_user
-      SPRING_DATASOURCE_PASSWORD: easyshop_password
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_FLYWAY_SCHEMAS: auth
       SPRING_FLYWAY_DEFAULT_SCHEMA: auth
       SPRING_FLYWAY_CREATE_SCHEMAS: "true"
@@ -119,8 +119,8 @@ services:
     environment:
       DB_URL: jdbc:postgresql://db:5432/easyshop
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/easyshop
-      SPRING_DATASOURCE_USERNAME: easyshop_user
-      SPRING_DATASOURCE_PASSWORD: easyshop_password
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_FLYWAY_SCHEMAS: products
       SPRING_FLYWAY_DEFAULT_SCHEMA: products
       SPRING_FLYWAY_CREATE_SCHEMAS: "true"
@@ -135,8 +135,8 @@ services:
     environment:
       DB_URL: jdbc:postgresql://db:5432/easyshop
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/easyshop
-      SPRING_DATASOURCE_USERNAME: easyshop_user
-      SPRING_DATASOURCE_PASSWORD: easyshop_password
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_FLYWAY_SCHEMAS: purchases
       SPRING_FLYWAY_DEFAULT_SCHEMA: purchases
       SPRING_FLYWAY_CREATE_SCHEMAS: "true"
