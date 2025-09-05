@@ -42,9 +42,6 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  // Current authentication status
-  const isAuthenticated = checkAuthentication()
-
   // Get user role from token
   const getUserRole = () => {
     const token = getToken()
@@ -70,6 +67,9 @@ export const AuthProvider = ({ children }) => {
       return null
     }
   }
+
+  // Current authentication status
+  const isAuthenticated = checkAuthentication()
 
   // Login function
   const login = async (email, password) => {
@@ -134,7 +134,7 @@ export const AuthProvider = ({ children }) => {
     const initAuth = async () => {
       setLoading(true)
       
-      if (isAuthenticated) {
+      if (checkAuthentication()) {
         const email = getUserEmail()
         const role = getUserRole()
         
