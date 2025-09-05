@@ -1,13 +1,15 @@
 package com.easyshop.auth.jwt;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.*;
-import io.jsonwebtoken.security.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-import java.security.*;
-import java.util.*;
+import javax.crypto.SecretKey;
+import java.util.Date;
 
 @Component
 public class JwtService {
@@ -18,7 +20,7 @@ public class JwtService {
     @Value("${jwt.refreshTtlMinutes:1440}") // 24 hours default
     long refreshTtl;
 
-    Key key() {
+    SecretKey key() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 

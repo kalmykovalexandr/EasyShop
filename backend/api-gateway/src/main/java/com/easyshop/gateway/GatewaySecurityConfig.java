@@ -21,7 +21,7 @@ public class GatewaySecurityConfig {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http, JwtAuthFilter jwtAuthFilter) {
         return http
-                .csrf(csrf -> csrf.disable())
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .addFilterBefore(jwtAuthFilter, SecurityWebFiltersOrder.AUTHENTICATION)
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("/api/auth/register", "/api/auth/login", "/api/auth/password-requirements").permitAll()

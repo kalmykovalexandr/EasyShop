@@ -4,9 +4,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.gateway.filter.GatewayFilterChain;
-import org.springframework.cloud.gateway.filter.GlobalFilter;
-import org.springframework.core.Ordered;
+import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.WebFilter;
+import org.springframework.web.server.WebFilterChain;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -18,7 +18,6 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.SecretKey;
@@ -26,7 +25,7 @@ import java.util.Base64;
 import java.util.List;
 
 @Component
-public class JwtAuthFilter implements GlobalFilter, Ordered {
+public class JwtAuthFilter implements WebFilter {
 
     private final SecretKey key;
 
@@ -35,7 +34,7 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
     }
 
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
         
         if (!StringUtils.hasText(authHeader) || !authHeader.startsWith("Bearer ")) {
@@ -70,10 +69,5 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
             // Invalid token - continue without authentication
             return chain.filter(exchange);
         }
-    }
-
-    @Override
-    public int getOrder() {
-        return -100; // Executes before other filters
     }
 }
