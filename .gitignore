@@ -18,11 +18,11 @@ npm-debug.log*
 .vscode/
 
 # Environment
+.env
 /.env
+infra/.env
 infra/prod/.env
 backend/*/.env
-
-infra/prod/.env
 
 # SSH Keys
 *.pem
