@@ -6,13 +6,8 @@ This folder contains all infrastructure and deployment files for EasyShop projec
 
 ```
 infra/
-├── manual-deploy/                    # Manual deployment (recommended)
-│   └── deploy-oracle.sh              # Main deployment script
-├── auto-deploy/                      # Automatic deployment
-│   └── deployment.md                 # CI/CD documentation
-├── docker-compose.dev.yml            # Development configuration
+├── deploy.sh                         # Main deployment script
 ├── docker-compose.prod.yml           # Production configuration
-├── env.prod.example                  # Environment variables example
 └── README.md                         # This documentation
 ```
 
@@ -59,40 +54,42 @@ sudo reboot
 
 ### 2. Environment Variables Setup
 
+Create a `.env` file in the project root directory with the following variables:
+
 ```bash
 # Create environment variables file
-cp ../env.prod.example ../.env.prod
-
-# Edit with your settings
-nano ../.env.prod
+nano ../.env
 ```
 
-Example content of `.env.prod`:
+Required environment variables:
 ```bash
 # Database Configuration
-DB_USER=easyshop_user
-DB_PASSWORD=your_secure_password_here
+DB_USER=your_database_username
+DB_PASSWORD=your_secure_database_password
+DB_URL=jdbc:postgresql://db:5432/easyshop
 
 # JWT Configuration
-JWT_SECRET=your_jwt_secret_key_here_minimum_32_characters
+JWT_SECRET=your_jwt_secret_key_minimum_32_characters
 JWT_TTL_MINUTES=60
 
 # Docker Configuration
 IMAGE_VERSION=latest
-DOCKER_REGISTRY=localhost
+DOCKER_REGISTRY=your_docker_registry_or_localhost
 ```
+
+**Important**: Replace all placeholder values with your actual configuration values.
 
 ### 3. Application Deployment
 
 ```bash
 # Go to deployment files folder
-cd infra/manual-deploy
+cd infra
 
 # Make script executable
-chmod +x deploy-oracle.sh
+chmod +x deploy.sh
 
 # Run full deployment
-./deploy-oracle.sh
+./deploy.sh
 ```
 
 ## What the deployment script does
@@ -106,14 +103,12 @@ chmod +x deploy-oracle.sh
 ## Additional Options
 
 ```bash
-# Deployment only (without build)
-./deploy-oracle.sh --skip-build
+# Deploy specific services only
+./deploy.sh frontend
+./deploy.sh auth-service api-gateway
 
-# Build only (without deployment)
-./deploy-oracle.sh --skip-deploy
-
-# Show help
-./deploy-oracle.sh --help
+# Deploy all services (default)
+./deploy.sh
 ```
 
 ## Result
@@ -130,16 +125,16 @@ After successful execution, the application will be available at:
 
 ```bash
 # View logs
-docker compose -f ../docker-compose.prod.yml logs -f
+docker compose -f docker-compose.prod.yml logs -f
 
 # Stop all services
-docker compose -f ../docker-compose.prod.yml down
+docker compose -f docker-compose.prod.yml down
 
 # Restart services
-docker compose -f ../docker-compose.prod.yml restart
+docker compose -f docker-compose.prod.yml restart
 
 # Service status
-docker compose -f ../docker-compose.prod.yml ps
+docker compose -f docker-compose.prod.yml ps
 ```
 
 ## Troubleshooting
@@ -175,10 +170,10 @@ cd frontend && npm install && npm run build
 ### Services not starting
 ```bash
 # Check logs
-docker compose -f ../docker-compose.prod.yml logs
+docker compose -f docker-compose.prod.yml logs
 
 # Check environment variables
-cat ../.env.prod
+cat ../.env
 
 # Check ports
 sudo netstat -tlnp | grep -E ':(80|8080|9001|9002|9003|5432)'
@@ -186,36 +181,30 @@ sudo netstat -tlnp | grep -E ':(80|8080|9001|9002|9003|5432)'
 
 ## Application Update
 
-### Quick Update (Recommended)
-```bash
-# Run the update script
-./update-oracle.sh
-```
-
 ### Manual Update
 ```bash
 # Stop current version
-docker compose -f ../docker-compose.prod.yml down
+docker compose -f docker-compose.prod.yml down
 
 # Pull latest changes
 git pull origin main
 
 # Start new version
-./deploy-oracle.sh
+./deploy.sh
 ```
 
 ### Complete Clean Install
 ```bash
-# Clean everything
-./clean-oracle.sh
+# Stop and remove everything
+docker compose -f docker-compose.prod.yml down --rmi all
 
 # Clone fresh
 git clone <your-repo-url> /opt/easyshop
 cd /opt/easyshop
 
 # Deploy fresh
-cd infra/manual-deploy
-./deploy-oracle.sh
+cd infra
+./deploy.sh
 ```
 
 ## Cleanup
@@ -225,7 +214,7 @@ cd infra/manual-deploy
 docker system prune -a
 
 # Remove all EasyShop containers and images
-docker compose -f ../docker-compose.prod.yml down --rmi all
+docker compose -f docker-compose.prod.yml down --rmi all
 ```
 
 ## Technical Requirements
@@ -251,13 +240,9 @@ docker compose -f ../docker-compose.prod.yml down --rmi all
 
 ## Monitoring
 
-- Check logs: `docker compose -f ../docker-compose.prod.yml logs`
+- Check logs: `docker compose -f docker-compose.prod.yml logs`
 - Monitor resource usage: `docker stats`
 - Configure health checks for critical services
-
-## Automatic Deployment
-
-If you want to configure automatic deployment via GitHub Actions, use files in `auto-deploy/` folder. Follow instructions in `auto-deploy/deployment.md`.
 
 ## Support
 
