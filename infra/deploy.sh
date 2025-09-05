@@ -41,12 +41,12 @@ if [ ! -f "../backend/pom.xml" ] || [ ! -f "../frontend/package.json" ]; then
 fi
 
 # Check for .env file
-if [ ! -f "../.env" ]; then
+if [ ! -f ".env" ]; then
     error ".env file not found! Please create it manually with your actual values"
 fi
 
 # Load environment variables
-export $(cat ../.env | grep -v '^#' | xargs)
+export $(cat .env | grep -v '^#' | xargs)
 
 # Validate required environment variables
 if [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ] || [ -z "$JWT_SECRET" ]; then
@@ -99,13 +99,13 @@ done
 # Deploy with Docker Compose using production config
 header "Deploying Services"
 
-print "Using production Docker Compose configuration from docker-compose.prod.yml"
+print "Using production Docker Compose configuration from docker-compose.yml"
 
 print "Stopping existing containers..."
-docker compose -f docker-compose.prod.yml down 2>/dev/null || true
+docker compose -f docker-compose.yml down 2>/dev/null || true
 
 print "Starting services..."
-docker compose -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.yml up -d
 
 print "Deployment completed!"
 print "Services available at:"
@@ -115,6 +115,6 @@ print "  Auth Service: http://localhost:9001"
 print "  Product Service: http://localhost:9002"
 print "  Purchase Service: http://localhost:9003"
 print ""
-print "Check status: docker compose -f docker-compose.prod.yml ps"
-print "View logs: docker compose -f docker-compose.prod.yml logs -f"
-print "Stop services: docker compose -f docker-compose.prod.yml down"
+print "Check status: docker compose -f docker-compose.yml ps"
+print "View logs: docker compose -f docker-compose.yml logs -f"
+print "Stop services: docker compose -f docker-compose.yml down"

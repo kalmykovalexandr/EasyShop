@@ -7,7 +7,7 @@ This folder contains all infrastructure and deployment files for EasyShop projec
 ```
 infra/
 ├── deploy.sh                         # Main deployment script
-├── docker-compose.prod.yml           # Production configuration
+├── docker-compose.yml                # Production configuration
 └── README.md                         # This documentation
 ```
 
@@ -125,16 +125,16 @@ After successful execution, the application will be available at:
 
 ```bash
 # View logs
-docker compose -f docker-compose.prod.yml logs -f
+docker compose -f docker-compose.yml logs -f
 
 # Stop all services
-docker compose -f docker-compose.prod.yml down
+docker compose -f docker-compose.yml down
 
 # Restart services
-docker compose -f docker-compose.prod.yml restart
+docker compose -f docker-compose.yml restart
 
 # Service status
-docker compose -f docker-compose.prod.yml ps
+docker compose -f docker-compose.yml ps
 ```
 
 ## Troubleshooting
@@ -170,7 +170,7 @@ cd frontend && npm install && npm run build
 ### Services not starting
 ```bash
 # Check logs
-docker compose -f docker-compose.prod.yml logs
+docker compose -f docker-compose.yml logs
 
 # Check environment variables
 cat ../.env
@@ -184,7 +184,7 @@ sudo netstat -tlnp | grep -E ':(80|8080|9001|9002|9003|5432)'
 ### Manual Update
 ```bash
 # Stop current version
-docker compose -f docker-compose.prod.yml down
+docker compose -f docker-compose.yml down
 
 # Pull latest changes
 git pull origin main
@@ -196,7 +196,7 @@ git pull origin main
 ### Complete Clean Install
 ```bash
 # Stop and remove everything
-docker compose -f docker-compose.prod.yml down --rmi all
+docker compose -f docker-compose.yml down --rmi all
 
 # Clone fresh
 git clone <your-repo-url> /opt/easyshop
@@ -214,7 +214,7 @@ cd infra
 docker system prune -a
 
 # Remove all EasyShop containers and images
-docker compose -f docker-compose.prod.yml down --rmi all
+docker compose -f docker-compose.yml down --rmi all
 ```
 
 ## Technical Requirements
@@ -240,7 +240,7 @@ docker compose -f docker-compose.prod.yml down --rmi all
 
 ## Monitoring
 
-- Check logs: `docker compose -f docker-compose.prod.yml logs`
+- Check logs: `docker compose -f docker-compose.yml logs`
 - Monitor resource usage: `docker stats`
 - Configure health checks for critical services
 
