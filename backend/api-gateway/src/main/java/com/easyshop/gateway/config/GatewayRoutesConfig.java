@@ -12,11 +12,11 @@ public class GatewayRoutesConfig {
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("auth", r -> r.path("/api/auth/**")
-                        .uri("http://auth-service:9001"))
+                        .uri("lb://auth-service"))
                 .route("products", r -> r.path("/api/products/**")
-                        .uri("http://product-service:9002"))
+                        .uri("lb://product-service"))
                 .route("purchases", r -> r.path("/api/purchases/**")
-                        .uri("http://purchase-service:9003"))
+                        .uri("lb://purchase-service"))
                 .build();
     }
 }
