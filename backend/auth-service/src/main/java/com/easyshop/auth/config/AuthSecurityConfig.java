@@ -137,6 +137,8 @@ public class AuthSecurityConfig {
                 .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .redirectUri("http://89.168.17.102/callback")
+                .redirectUri("http://89.168.17.102")
                 .redirectUri("http://localhost:3000/callback")
                 .redirectUri("http://localhost:3000")
                 .scope(OidcScopes.OPENID)
