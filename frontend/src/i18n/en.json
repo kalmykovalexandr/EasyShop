@@ -2,5 +2,6 @@
   "nav": {"shop": "Shop", "account": "Account", "admin": "Admin"},
   "shop": {"catalog": "Catalog", "stock": "stock", "buy_one": "Buy 1 pc.", "login_first": "Log in first on Account tab", "order_done": "Order placed", "loading": "Loading products...", "no_products": "No products available", "retry": "Retry"},
   "account": {"login": "Login", "register": "Register", "email": "Email", "password": "Password", "password_min": "Password (min. 8)", "submit_login": "Sign in", "create_account": "Create account", "login_success": "Logged in", "register_success": "Done! Now log in."},
-  "admin": {"create_product": "Create product", "name": "Name", "price": "Price", "stock": "Stock", "description": "Description", "create": "Create", "catalog": "Catalog", "delete": "Delete", "confirm_delete": "Delete?"}
+  "admin": {"create_product": "Create product", "name": "Name", "price": "Price", "stock": "Stock", "description": "Description", "create": "Create", "catalog": "Catalog", "delete": "Delete", "confirm_delete": "Delete?"},
+  "success": {"welcome_title": "Welcome to EasyShop!", "login_success": "You have successfully logged in!", "user_info": "User Information", "email": "Email", "role": "Role", "go_to_shop": "Go to Shop", "account_settings": "Account Settings", "auto_redirect": "You will be automatically redirected to the shop in {{countdown}} seconds..."}
 }

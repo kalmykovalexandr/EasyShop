@@ -2,8 +2,8 @@ package com.easyshop.product.service;
 
 import com.easyshop.product.domain.Product;
 import com.easyshop.product.domain.ProductRepository;
-import com.easyshop.product.web.ProductCreateDto;
-import com.easyshop.product.web.ProductUpdateDto;
+import com.easyshop.product.web.dto.ProductCreateDto;
+import com.easyshop.product.web.dto.ProductUpdateDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

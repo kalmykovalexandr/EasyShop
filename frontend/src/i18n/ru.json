@@ -2,5 +2,6 @@
   "nav": {"shop": "Магазин", "account": "Аккаунт", "admin": "Админ"},
   "shop": {"catalog": "Каталог", "stock": "сток", "buy_one": "Купить 1 шт.", "login_first": "Сначала войдите во вкладке Аккаунт", "order_done": "Заказ оформлен", "loading": "Загрузка товаров...", "no_products": "Товары недоступны", "retry": "Повторить"},
   "account": {"login": "Вход", "register": "Регистрация", "email": "Email", "password": "Пароль", "password_min": "Пароль (мин. 8)", "submit_login": "Войти", "create_account": "Создать аккаунт", "login_success": "Вход выполнен", "register_success": "Готово! Теперь войдите."},
-  "admin": {"create_product": "Создать товар", "name": "Название", "price": "Цена", "stock": "Сток", "description": "Описание", "create": "Создать", "catalog": "Каталог", "delete": "Удалить", "confirm_delete": "Удалить?"}
+  "admin": {"create_product": "Создать товар", "name": "Название", "price": "Цена", "stock": "Сток", "description": "Описание", "create": "Создать", "catalog": "Каталог", "delete": "Удалить", "confirm_delete": "Удалить?"},
+  "success": {"welcome_title": "Добро пожаловать в EasyShop!", "login_success": "Вы успешно вошли в систему!", "user_info": "Информация о пользователе", "email": "Email", "role": "Роль", "go_to_shop": "Перейти в магазин", "account_settings": "Настройки аккаунта", "auto_redirect": "Вы будете автоматически перенаправлены в магазин через {{countdown}} секунд..."}
 }

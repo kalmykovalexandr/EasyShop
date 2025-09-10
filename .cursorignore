@@ -1,0 +1,80 @@
+# Игнорируемые файлы и папки для Cursor
+
+# Maven
+**/target/
+**/pom.xml.tag
+**/pom.xml.releaseBackup
+**/pom.xml.versionsBackup
+**/pom.xml.next
+**/release.properties
+**/dependency-reduced-pom.xml
+**/buildNumber.properties
+**/.mvn/timing.properties
+**/.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+**/.gradle/
+**/build/
+**/gradle-app.setting
+**/!gradle-wrapper.jar
+**/gradlew
+**/gradlew.bat
+
+# IDE
+**/.idea/
+**/.vscode/
+**/.settings/
+**/.project
+**/.classpath
+**/.factorypath
+
+# OS
+**/.DS_Store
+**/Thumbs.db
+
+# Logs
+**/*.log
+**/logs/
+
+# Runtime
+**/node_modules/
+**/dist/
+**/build/
+
+# Docker
+**/docker-compose.override.yml
+
+# Environment
+**/.env
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+
+# Database
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+
+# Temporary files
+**/tmp/
+**/temp/
+**/*.tmp
+**/*.temp
+
+# Coverage reports
+**/coverage/
+**/target/site/
+
+# JAR files
+**/*.jar
+**/*.war
+**/*.ear
+
+# Compiled classes
+**/*.class
+
+# Package files
+**/*.tar.gz
+**/*.zip
+**/*.rar
