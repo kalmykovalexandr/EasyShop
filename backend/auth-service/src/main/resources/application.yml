@@ -13,9 +13,11 @@ spring:
     properties:
       hibernate:
         default_schema: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA:auth}
-jwt:
-  secret: ${JWT_SECRET}
-  ttlMinutes: ${JWT_TTL_MINUTES:60}
+  security:
+    oauth2:
+      authorization-server:
+        issuer: ${AUTH_SERVER_ISSUER:http://localhost:9001}
+        jwk-set-uri: ${AUTH_SERVER_ISSUER:http://localhost:9001}/oauth2/jwks
 logging:
   pattern:
     level: "%5p [trace:%X{traceId}]"

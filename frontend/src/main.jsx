@@ -9,6 +9,8 @@ import ru from './i18n/ru.json'
 import Shop from './pages/Shop.jsx'
 import Account from './pages/Account.jsx'
 import Admin from './pages/Admin.jsx'
+import Success from './pages/Success.jsx'
+import OIDCCallback from './components/OIDCCallback.jsx'
 
 i18n.init({ resources:{ en:{ translation:en }, ru:{ translation:ru } }, lng:localStorage.getItem('lang')||'ru', interpolation:{ escapeValue:false } })
 
@@ -59,6 +61,8 @@ function Layout(){
           <Route path="/shop" element={<Shop/>}/>
           <Route path="/account" element={<Account/>}/>
           <Route path="/admin" element={<Admin/>}/>
+          <Route path="/success" element={<Success/>}/>
+          <Route path="/callback" element={<OIDCCallback/>}/>
         </Routes>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import { api, getToken, setToken, removeToken } from '../lib/api'
+import { api, getAccessToken, setAccessToken, removeAccessToken, getRefreshToken, setRefreshToken, removeRefreshToken, getAuthorizationUrl } from '../lib/api'
 
 const AuthContext = createContext()
 
@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 
   // Check if user is authenticated
   const checkAuthentication = () => {
-    const token = getToken()
+    const token = getAccessToken()
     if (!token) return false
     
     try {
@@ -27,16 +27,59 @@ export const AuthProvider = ({ children }) => {
       const now = Date.now() / 1000
       
       if (payload.exp < now) {
-        // Token expired
-        removeToken()
-        setUser(null)
-        return false
+        // Token expired - try to refresh
+        return tryRefreshToken()
       }
       
       return true
     } catch (error) {
       // Invalid token
-      removeToken()
+      removeAccessToken()
+      removeRefreshToken()
+      setUser(null)
+      return false
+    }
+  }
+
+  // Try to refresh access token using refresh token
+  const tryRefreshToken = async () => {
+    const refreshToken = getRefreshToken()
+    if (!refreshToken) {
+      removeAccessToken()
+      setUser(null)
+      return false
+    }
+
+    try {
+      const response = await fetch(`${window.EASYSHOP_CONFIG?.AUTH_SERVER_URL || 'http://localhost:9001'}/oauth2/token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          client_id: 'webapp',
+          refresh_token: refreshToken
+        })
+      })
+
+      if (response.ok) {
+        const tokenData = await response.json()
+        setAccessToken(tokenData.access_token)
+        if (tokenData.refresh_token) {
+          setRefreshToken(tokenData.refresh_token)
+        }
+        return true
+      } else {
+        // Refresh failed
+        removeAccessToken()
+        removeRefreshToken()
+        setUser(null)
+        return false
+      }
+    } catch (error) {
+      removeAccessToken()
+      removeRefreshToken()
       setUser(null)
       return false
     }
@@ -44,7 +87,7 @@ export const AuthProvider = ({ children }) => {
 
   // Get user role from token
   const getUserRole = () => {
-    const token = getToken()
+    const token = getAccessToken()
     if (!token) return null
     
     try {
@@ -57,12 +100,12 @@ export const AuthProvider = ({ children }) => {
 
   // Get user email from token
   const getUserEmail = () => {
-    const token = getToken()
+    const token = getAccessToken()
     if (!token) return null
     
     try {
       const payload = JSON.parse(atob(token.split('.')[1]))
-      return payload.sub || null
+      return payload.sub || payload.email || null
     } catch (error) {
       return null
     }
@@ -71,25 +114,40 @@ export const AuthProvider = ({ children }) => {
   // Current authentication status
   const isAuthenticated = checkAuthentication()
 
-  // Login function
+  // OIDC Login function - redirects to authorization server
   const login = async (email, password) => {
     try {
       setError(null)
-      const response = await api('/auth/login', {
-        method: 'POST',
-        body: JSON.stringify({ email, password })
-      })
+      // Store return URL for after login
+      localStorage.setItem('oidc_return_url', window.location.pathname)
       
-      if (response.token) {
-        setToken(response.token)
-        setUser({
-          email: response.email,
-          role: response.role
-        })
-        return { success: true }
-      } else {
-        throw new Error('Invalid response from server')
+      // Redirect to OIDC authorization server
+      const authUrl = await getAuthorizationUrl()
+      window.location.href = authUrl
+      
+      return { success: true }
+    } catch (error) {
+      setError(error.message)
+      return { success: false, error: error.message }
+    }
+  }
+
+  // Handle OIDC callback - called from OIDCCallback component
+  const handleOIDCCallback = (accessToken, refreshToken, userInfo) => {
+    try {
+      setAccessToken(accessToken)
+      if (refreshToken) {
+        setRefreshToken(refreshToken)
       }
+      
+      // Extract user info from token or userInfo
+      const email = userInfo?.email || getUserEmail()
+      const role = userInfo?.role || getUserRole() || 'USER'
+      
+      setUser({ email, role })
+      setError(null)
+      
+      return { success: true }
     } catch (error) {
       setError(error.message)
       return { success: false, error: error.message }
@@ -113,9 +171,14 @@ export const AuthProvider = ({ children }) => {
 
   // Logout function
   const logout = () => {
-    removeToken()
+    removeAccessToken()
+    removeRefreshToken()
     setUser(null)
     setError(null)
+    
+    // Redirect to OIDC logout endpoint
+    const logoutUrl = `${window.EASYSHOP_CONFIG?.AUTH_SERVER_URL || 'http://localhost:9001'}/logout?post_logout_redirect_uri=${encodeURIComponent(window.location.origin)}`
+    window.location.href = logoutUrl
   }
 
   // Check if user has specific role
@@ -175,6 +238,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     hasRole,
     isAdmin,
+    handleOIDCCallback,
     clearError: () => setError(null)
   }
 

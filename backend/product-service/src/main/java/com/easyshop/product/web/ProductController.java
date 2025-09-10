@@ -3,6 +3,8 @@ package com.easyshop.product.web;
 import com.easyshop.common.web.ApiResponseDto;
 import com.easyshop.product.domain.Product;
 import com.easyshop.product.service.ProductService;
+import com.easyshop.product.web.dto.ProductCreateDto;
+import com.easyshop.product.web.dto.ProductUpdateDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

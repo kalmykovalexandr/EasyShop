@@ -3,8 +3,22 @@ server:
 spring:
   application:
     name: api-gateway
-jwt:
-  secret: ${JWT_SECRET}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH_SERVER_ISSUER:http://localhost:9001}
+      client:
+        registration:
+          gateway:
+            provider: easyshop
+            client-id: gateway
+            client-secret: ${GATEWAY_CLIENT_SECRET:gateway-secret}
+            authorization-grant-type: client_credentials
+            scope: read,write
+        provider:
+          easyshop:
+            issuer-uri: ${AUTH_SERVER_ISSUER:http://localhost:9001}
 logging:
   pattern:
     level: "%5p [trace:%X{traceId}]"

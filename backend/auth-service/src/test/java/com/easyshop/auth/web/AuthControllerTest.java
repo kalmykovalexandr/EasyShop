@@ -1,6 +1,5 @@
 package com.easyshop.auth.web;
 
-import com.easyshop.auth.jwt.JwtService;
 import com.easyshop.auth.user.UserRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -26,9 +25,6 @@ class AuthControllerTest {
 
     @MockBean
     private PasswordEncoder enc;
-
-    @MockBean
-    private JwtService jwt;
 
     @Test
     void healthEndpointWorks() throws Exception {

@@ -13,8 +13,11 @@ spring:
     properties:
       hibernate:
         default_schema: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA:products}
-jwt:
-  secret: ${JWT_SECRET}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH_SERVER_ISSUER:http://localhost:9001}
 logging:
   pattern:
     level: "%5p [trace:%X{traceId}]"
