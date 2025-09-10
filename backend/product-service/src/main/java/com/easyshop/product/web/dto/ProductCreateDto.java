@@ -11,3 +11,4 @@ public record ProductCreateDto(
         @NotNull @Min(0) Integer stock
 ) {
 }
+
