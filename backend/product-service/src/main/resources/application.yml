@@ -17,7 +17,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${AUTH_SERVER_ISSUER:http://localhost:9001}
+          issuer-uri: ${AUTH_SERVER_ISSUER:http://auth-service:9001}
 logging:
   pattern:
     level: "%5p [trace:%X{traceId}]"
