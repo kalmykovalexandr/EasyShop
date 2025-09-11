@@ -36,11 +36,6 @@ spring:
           easyshop:
             issuer-uri: ${AUTH_SERVER_ISSUER}
 
-# JWT configuration
-jwt:
-  secret: ${JWT_SECRET}
-  ttl-minutes: ${JWT_TTL_MINUTES}
-
 # Product service integration
 product:
   service:

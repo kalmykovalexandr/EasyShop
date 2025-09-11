@@ -22,10 +22,6 @@ spring:
           easyshop:
             issuer-uri: ${AUTH_SERVER_ISSUER}
 
-# JWT configuration
-jwt:
-  secret: ${JWT_SECRET}
-
 # Service URLs for routing
 services:
   auth:
