@@ -8,7 +8,6 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.*;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverter;
@@ -17,7 +16,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.util.Arrays;
@@ -129,18 +127,4 @@ public class GatewaySecurityConfig {
         return manager;
     }
 
-    /**
-     * WebClient with OAuth2 client credentials filter for service-to-service calls.
-     * Automatically adds client credentials token to requests.
-     */
-    @Bean
-    public WebClient webClient(ReactiveOAuth2AuthorizedClientManager authorizedClientManager) {
-        ServerOAuth2AuthorizedClientExchangeFilterFunction oauth2Client =
-                new ServerOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager);
-        oauth2Client.setDefaultClientRegistrationId("gateway");
-
-        return WebClient.builder()
-                .filter(oauth2Client)
-                .build();
-    }
 }

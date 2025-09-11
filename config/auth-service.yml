@@ -15,6 +15,11 @@ spring:
     properties:
       hibernate:
         default_schema: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}
+  flyway:
+    schemas: ${SPRING_FLYWAY_SCHEMAS}
+    default-schema: ${SPRING_FLYWAY_DEFAULT_SCHEMA}
+    create-schemas: ${SPRING_FLYWAY_CREATE_SCHEMAS}
+    table: ${SPRING_FLYWAY_TABLE}
   security:
     oauth2:
       authorization-server:
@@ -22,14 +27,6 @@ spring:
         jwk-set-uri: ${AUTH_SERVER_ISSUER}/oauth2/jwks
         oidc:
           discovery-endpoint: ${AUTH_SERVER_ISSUER}/.well-known/openid-configuration
-
-# Flyway configuration
-spring:
-  flyway:
-    schemas: ${SPRING_FLYWAY_SCHEMAS}
-    default-schema: ${SPRING_FLYWAY_DEFAULT_SCHEMA}
-    create-schemas: ${SPRING_FLYWAY_CREATE_SCHEMAS}
-    table: ${SPRING_FLYWAY_TABLE}
 
 # JWT configuration
 jwt:
