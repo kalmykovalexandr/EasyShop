@@ -10,31 +10,6 @@
     <name>EasyShop Backend (Aggregator)</name>
     <description>Aggregator POM for EasyShop microservices</description>
 
-    <repositories>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/EasyShopOrg/EasyShop</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/EasyShopOrg/EasyShop</url>
-        </repository>
-        <snapshotRepository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/EasyShopOrg/EasyShop</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <modules>
         <module>common-web</module>

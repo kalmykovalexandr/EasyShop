@@ -75,7 +75,8 @@ public class AuthSecurityConfig {
             throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/login", "/error", "/webjars/**").permitAll()
+                        .requestMatchers("/login", "/error", "/webjars/**",
+                                "/healthz", "/readyz", "/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 // Form login handles the redirect to the login page from the
@@ -93,13 +94,12 @@ public class AuthSecurityConfig {
      * In production, this should be replaced with database-backed user service.
      */
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails userDetails = User.withDefaultPasswordEncoder()
+    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+        UserDetails userDetails = User.builder()
                 .username("user")
-                .password("password")
+                .password(passwordEncoder.encode("password"))
                 .roles("USER")
                 .build();
-
         return new InMemoryUserDetailsManager(userDetails);
     }
 
