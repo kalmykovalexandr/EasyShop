@@ -1,24 +1,11 @@
-server:
-  port: 8080
 spring:
   application:
     name: api-gateway
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${AUTH_SERVER_ISSUER:http://auth-service:9001}
-      client:
-        registration:
-          gateway:
-            provider: easyshop
-            client-id: gateway
-            client-secret: ${GATEWAY_CLIENT_SECRET:gateway-secret}
-            authorization-grant-type: client_credentials
-            scope: read,write
-        provider:
-          easyshop:
-            issuer-uri: ${AUTH_SERVER_ISSUER:http://auth-service:9001}
-logging:
-  pattern:
-    level: "%5p [trace:%X{traceId}]"
+  config:
+    import: configserver:http://config-server:8888
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE}
+
+# Service-specific configuration (will be overridden by Config Server)
+server:
+  port: 8080

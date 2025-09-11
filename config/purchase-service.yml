@@ -1,0 +1,58 @@
+# Purchase Service specific configuration
+server:
+  port: 9003
+
+spring:
+  application:
+    name: purchase-service
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH_SERVER_ISSUER}
+      client:
+        registration:
+          purchase-service:
+            client-id: ${PURCHASE_SERVICE_CLIENT_ID}
+            client-secret: ${PURCHASE_SERVICE_CLIENT_SECRET}
+            authorization-grant-type: client_credentials
+            scope: ${PURCHASE_SERVICE_SCOPE}
+        provider:
+          easyshop:
+            issuer-uri: ${AUTH_SERVER_ISSUER}
+
+# Flyway configuration
+spring:
+  flyway:
+    schemas: ${SPRING_FLYWAY_SCHEMAS}
+    default-schema: ${SPRING_FLYWAY_DEFAULT_SCHEMA}
+    create-schemas: ${SPRING_FLYWAY_CREATE_SCHEMAS}
+    table: ${SPRING_FLYWAY_TABLE}
+
+# JWT configuration
+jwt:
+  secret: ${JWT_SECRET}
+  ttl-minutes: ${JWT_TTL_MINUTES}
+
+# Product service integration
+product:
+  service:
+    url: ${PRODUCT_SERVICE_URL}
+
+# Purchase service specific settings
+purchase:
+  service:
+    name: purchase-service
+    version: ${SERVICE_VERSION}
+    description: ${SERVICE_DESCRIPTION}
+

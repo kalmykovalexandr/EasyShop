@@ -1,0 +1,632 @@
+{
+  "info": {
+    "name": "EasyShop Authorization Testing",
+    "description": "Complete collection for testing EasyShop authorization system including OAuth2, registration, login, and protected endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "server_url",
+      "value": "http://localhost:8080",
+      "type": "string",
+      "description": "Base URL of your EasyShop server (e.g., http://localhost:8080 for local, https://api.easyshop.com for production)"
+    },
+    {
+      "key": "frontend_url",
+      "value": "http://localhost:3000",
+      "type": "string",
+      "description": "Frontend URL for OAuth2 redirects (e.g., http://localhost:3000 for local, https://easyshop.com for production)"
+    },
+    {
+      "key": "base_url",
+      "value": "{{server_url}}/api",
+      "type": "string",
+      "description": "API base URL with /api prefix"
+    },
+    {
+      "key": "auth_server_url",
+      "value": "{{server_url}}",
+      "type": "string",
+      "description": "Auth server URL (same as server_url)"
+    },
+    {
+      "key": "test_email",
+      "value": "test@yourdomain.com",
+      "type": "string",
+      "description": "Test email for registration and login"
+    },
+    {
+      "key": "test_password",
+      "value": "YourSecurePassword123!",
+      "type": "string",
+      "description": "Test password for registration and login"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT access token (auto-populated by tests)"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string",
+      "description": "JWT refresh token (auto-populated by tests)"
+    },
+    {
+      "key": "authorization_code",
+      "value": "",
+      "type": "string",
+      "description": "OAuth2 authorization code (get from browser OAuth2 flow)"
+    },
+    {
+      "key": "code_verifier",
+      "value": "",
+      "type": "string",
+      "description": "PKCE code verifier (get from browser OAuth2 flow)"
+    }
+  ],
+  "item": [
+    {
+      "name": "📋 SETUP INSTRUCTIONS",
+      "item": [
+        {
+          "name": "🚀 Quick Setup Guide",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://raw.githubusercontent.com/your-repo/easyshop/main/README.md",
+              "host": ["raw.githubusercontent.com"],
+              "path": ["your-repo", "easyshop", "main", "README.md"]
+            },
+            "description": "## 🚀 EasyShop API Testing - Local Development\n\n### 1. Prerequisites Setup\nFirst, install required tools:\n\n**Install Java 23, Maven, Node.js, PostgreSQL:**\n- See `LOCAL_DEVELOPMENT_SETUP.md` for detailed instructions\n- Or use Chocolatey: `choco install openjdk23 maven nodejs postgresql`\n\n### 2. Start Services Locally\n\n**Backend Services (4 terminals):**\n```bash\n# Terminal 1 - Auth Service\ncd backend/auth-service && mvn spring-boot:run\n\n# Terminal 2 - Product Service  \ncd backend/product-service && mvn spring-boot:run\n\n# Terminal 3 - Purchase Service\ncd backend/purchase-service && mvn spring-boot:run\n\n# Terminal 4 - API Gateway\ncd backend/api-gateway && mvn spring-boot:run\n```\n\n**Frontend (1 terminal):**\n```bash\ncd frontend && npm install && npm run dev\n```\n\n### 3. Configure Variables\nEdit collection variables (click collection name → Variables tab):\n\n| Variable | Local Value | Production Value |\n|----------|-------------|------------------|\n| `server_url` | `http://localhost:8080` | `https://api.easyshop.com` |\n| `frontend_url` | `http://localhost:3000` | `https://easyshop.com` |\n| `test_email` | `test@localhost.com` | `test@easyshop.com` |\n| `test_password` | `LocalTest123!` | `MyPassword123!` |\n\n### 4. Test Your Setup\n1. Run \"Health Checks\" folder first\n2. Register a user with \"Register New User\"\n3. Test OAuth2 flow with \"OAuth2 Authorization Server\"\n4. Test protected APIs with \"Protected Endpoints\"\n\n### 5. Local URLs\n- **Frontend**: http://localhost:3000\n- **API Gateway**: http://localhost:8080\n- **Auth Service**: http://localhost:9001\n- **Products**: http://localhost:8080/api/products\n\n**Ready to test locally! 🎉**"
+          }
+        },
+        {
+          "name": "🔧 Server Configuration",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://your-server.com/actuator/health",
+              "host": ["your-server.com"],
+              "path": ["actuator", "health"]
+            },
+            "description": "## 🔧 Server Configuration Required\n\n### OAuth2 Client Configuration\nUpdate your server's OAuth2 client settings:\n\n```java\n.redirectUri(\"https://yourdomain.com/callback\")\n.redirectUri(\"https://yourdomain.com\")\n```\n\n### CORS Configuration\nUpdate CORS settings:\n\n```java\nconfiguration.setAllowedOriginPatterns(\n    Collections.singletonList(\"https://yourdomain.com\")\n);\n```\n\n### Environment Variables\nSet these on your server:\n\n```bash\nexport AUTH_SERVER_ISSUER=https://api.yourdomain.com\nexport DB_URL=jdbc:postgresql://your-db:5432/easyshop_auth\nexport DB_USER=your_db_user\nexport DB_PASSWORD=your_db_password\n```\n\n### Health Check\nTest this endpoint to verify server is running:\n`GET {{server_url}}/actuator/health`"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Checks",
+      "item": [
+        {
+          "name": "API Gateway Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{server_url}}/actuator/health",
+              "host": ["{{server_url}}"],
+              "path": ["actuator", "health"]
+            }
+          }
+        },
+        {
+          "name": "Auth Service Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{server_url}}/actuator/health",
+              "host": ["{{server_url}}"],
+              "path": ["actuator", "health"]
+            }
+          }
+        },
+        {
+          "name": "Product Service Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products",
+              "host": ["{{base_url}}"],
+              "path": ["products"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Registration & Login",
+      "item": [
+        {
+          "name": "Get Password Requirements",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/password-requirements",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "password-requirements"]
+            }
+          }
+        },
+        {
+          "name": "Register New User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{test_email}}\",\n  \"password\": \"{{test_password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login User (Direct)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{test_email}}\",\n  \"password\": \"{{test_password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "OAuth2 Authorization Server",
+      "item": [
+        {
+          "name": "Get Authorization URL",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{server_url}}/.well-known/openid_configuration",
+              "host": ["{{server_url}}"],
+              "path": [".well-known", "openid_configuration"]
+            }
+          }
+        },
+        {
+          "name": "Get JWKS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{server_url}}/oauth2/jwks",
+              "host": ["{{server_url}}"],
+              "path": ["oauth2", "jwks"]
+            }
+          }
+        },
+        {
+          "name": "OAuth2 Token Exchange (Client Credentials)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Authorization",
+                "value": "Basic Z2F0ZXdheTpnYXRld2F5LXNlY3JldA=="
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "client_credentials"
+                },
+                {
+                  "key": "client_id",
+                  "value": "gateway"
+                },
+                {
+                  "key": "scope",
+                  "value": "read write"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server_url}}/oauth2/token",
+              "host": ["{{server_url}}"],
+              "path": ["oauth2", "token"]
+            }
+          }
+        },
+        {
+          "name": "OAuth2 Token Exchange (Authorization Code)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                },
+                {
+                  "key": "client_id",
+                  "value": "webapp"
+                },
+                {
+                  "key": "code",
+                  "value": "{{authorization_code}}",
+                  "description": "Get this from browser after OAuth2 flow"
+                },
+                {
+                  "key": "redirect_uri",
+                  "value": "{{frontend_url}}/callback"
+                },
+                {
+                  "key": "code_verifier",
+                  "value": "{{code_verifier}}",
+                  "description": "PKCE code verifier"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server_url}}/oauth2/token",
+              "host": ["{{server_url}}"],
+              "path": ["oauth2", "token"]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "refresh_token"
+                },
+                {
+                  "key": "client_id",
+                  "value": "webapp"
+                },
+                {
+                  "key": "refresh_token",
+                  "value": "{{refresh_token}}"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{server_url}}/oauth2/token",
+              "host": ["{{server_url}}"],
+              "path": ["oauth2", "token"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Protected Endpoints (with JWT)",
+      "item": [
+        {
+          "name": "Get Products (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products",
+              "host": ["{{base_url}}"],
+              "path": ["products"]
+            }
+          }
+        },
+        {
+          "name": "Get Single Product (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/1",
+              "host": ["{{base_url}}"],
+              "path": ["products", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Purchase (Protected)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"quantity\": 2\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/purchases/checkout",
+              "host": ["{{base_url}}"],
+              "path": ["purchases", "checkout"]
+            }
+          }
+        },
+        {
+          "name": "Get Purchases (Protected)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/purchases",
+              "host": ["{{base_url}}"],
+              "path": ["purchases"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Endpoints (ADMIN Role Required)",
+      "item": [
+        {
+          "name": "Create Product (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Product\",\n  \"description\": \"A test product created via API\",\n  \"price\": 99.99,\n  \"stock\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/products",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "products"]
+            }
+          }
+        },
+        {
+          "name": "Update Product (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Test Product\",\n  \"description\": \"An updated test product\",\n  \"price\": 149.99,\n  \"stock\": 5\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/products/1",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "products", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Product (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/products/1",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "products", "1"]
+            }
+          }
+        },
+        {
+          "name": "Reserve Stock (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/products/1/reserve?qty=5",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "products", "1", "reserve"],
+              "query": [
+                {
+                  "key": "qty",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Testing",
+      "item": [
+        {
+          "name": "Access Protected Endpoint Without Token",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/purchases",
+              "host": ["{{base_url}}"],
+              "path": ["purchases"]
+            }
+          }
+        },
+        {
+          "name": "Access Admin Endpoint with User Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Product\",\n  \"price\": 99.99,\n  \"stock\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/products",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "products"]
+            }
+          }
+        },
+        {
+          "name": "Invalid Token Test",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer invalid_token_here"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/purchases",
+              "host": ["{{base_url}}"],
+              "path": ["purchases"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Auto-generate test email if using default",
+          "if (pm.variables.get('test_email') === 'test@yourdomain.com') {",
+          "    const timestamp = Date.now();",
+          "    pm.variables.set('test_email', `test${timestamp}@yourdomain.com`);",
+          "    console.log('Auto-generated test email:', pm.variables.get('test_email'));",
+          "}",
+          "",
+          "// Validate required variables",
+          "const serverUrl = pm.variables.get('server_url');",
+          "const frontendUrl = pm.variables.get('frontend_url');",
+          "",
+          "if (serverUrl === 'https://your-server.com') {",
+          "    console.warn('⚠️  Please update server_url variable with your actual server URL');",
+          "}",
+          "",
+          "if (frontendUrl === 'https://your-frontend.com') {",
+          "    console.warn('⚠️  Please update frontend_url variable with your actual frontend URL');",
+          "}"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Auto-save tokens from token exchange responses",
+          "if (pm.response.json() && pm.response.json().access_token) {",
+          "    pm.variables.set('access_token', pm.response.json().access_token);",
+          "    console.log('✅ Access token saved:', pm.response.json().access_token.substring(0, 20) + '...');",
+          "}",
+          "",
+          "if (pm.response.json() && pm.response.json().refresh_token) {",
+          "    pm.variables.set('refresh_token', pm.response.json().refresh_token);",
+          "    console.log('✅ Refresh token saved:', pm.response.json().refresh_token.substring(0, 20) + '...');",
+          "}",
+          "",
+          "// Log response status",
+          "if (pm.response.status >= 200 && pm.response.status < 300) {",
+          "    console.log('✅ Request successful:', pm.response.status);",
+          "} else {",
+          "    console.log('❌ Request failed:', pm.response.status, pm.response.text());",
+          "}",
+          "",
+          "// Auto-populate base_url if not set",
+          "const serverUrl = pm.variables.get('server_url');",
+          "if (serverUrl && serverUrl !== 'https://your-server.com') {",
+          "    pm.variables.set('base_url', serverUrl + '/api');",
+          "    pm.variables.set('auth_server_url', serverUrl);",
+          "}"
+        ]
+      }
+    }
+  ]
+}

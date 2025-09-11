@@ -11,25 +11,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.oidc.OidcScopes;
-import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
-import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import com.easyshop.auth.service.DatabaseRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
-import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
-import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.http.MediaType;
 
-import java.time.Duration;
-import java.util.UUID;
 
 /**
  * Spring Authorization Server configuration with OIDC Discovery support.
@@ -83,11 +74,8 @@ public class AuthSecurityConfig {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
             throws Exception {
         http
-                .cors(cors -> cors.disable())
-                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/login", "/error", "/webjars/**").permitAll()
-                        .requestMatchers("/api/auth/register", "/api/auth/login", "/api/auth/password-requirements").permitAll()
                         .anyRequest().authenticated()
                 )
                 // Form login handles the redirect to the login page from the
@@ -130,71 +118,8 @@ public class AuthSecurityConfig {
 
 
     @Bean
-    public RegisteredClientRepository registeredClientRepository() {
-        // Webapp client with PKCE support
-        RegisteredClient webappClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("webapp")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://89.168.17.102/callback")
-                .redirectUri("http://89.168.17.102")
-                .scope(OidcScopes.OPENID)
-                .scope(OidcScopes.PROFILE)
-                .scope("read")
-                .scope("write")
-                .clientSettings(ClientSettings.builder()
-                        .requireAuthorizationConsent(false)
-                        .requireProofKey(true) // Enable PKCE
-                        .build())
-                .tokenSettings(TokenSettings.builder()
-                        .accessTokenTimeToLive(Duration.ofMinutes(60))
-                        .refreshTokenTimeToLive(Duration.ofDays(7))
-                        .idTokenSignatureAlgorithm(SignatureAlgorithm.RS256)
-                        .build())
-                .build();
-
-        // Gateway client for confidential access
-        RegisteredClient gatewayClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("gateway")
-                .clientSecret(passwordEncoder().encode("gateway-secret"))
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .scope("read")
-                .scope("write")
-                .tokenSettings(TokenSettings.builder()
-                        .accessTokenTimeToLive(Duration.ofMinutes(60))
-                        .build())
-                .build();
-
-        // Product service client for service-to-service communication
-        RegisteredClient productServiceClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("product-service")
-                .clientSecret(passwordEncoder().encode("product-service-secret"))
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .scope("read")
-                .scope("write")
-                .tokenSettings(TokenSettings.builder()
-                        .accessTokenTimeToLive(Duration.ofMinutes(60))
-                        .build())
-                .build();
-
-        // Purchase service client for service-to-service communication
-        RegisteredClient purchaseServiceClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("purchase-service")
-                .clientSecret(passwordEncoder().encode("purchase-service-secret"))
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .scope("read")
-                .scope("write")
-                .tokenSettings(TokenSettings.builder()
-                        .accessTokenTimeToLive(Duration.ofMinutes(60))
-                        .build())
-                .build();
-
-        return new InMemoryRegisteredClientRepository(
-                webappClient, gatewayClient, productServiceClient, purchaseServiceClient);
+    public RegisteredClientRepository registeredClientRepository(DatabaseRegisteredClientRepository databaseRepository) {
+        return databaseRepository;
     }
 
     /**

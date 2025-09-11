@@ -81,7 +81,7 @@ for arg in "$@"; do
             exit 0
             ;;
         *)
-            if [[ "$arg" =~ ^(auth-service|product-service|purchase-service|api-gateway|frontend|db)$ ]]; then
+            if [[ "$arg" =~ ^(config-server|auth-service|product-service|purchase-service|api-gateway|frontend|db)$ ]]; then
                 SERVICES+=("$arg")
             else
                 error "Unknown service: $arg. Use --help for available services."
@@ -92,7 +92,7 @@ done
 
 # If no services specified, deploy all
 if [ ${#SERVICES[@]} -eq 0 ]; then
-    SERVICES=("auth-service" "product-service" "purchase-service" "api-gateway" "frontend" "db")
+    SERVICES=("config-server" "auth-service" "product-service" "purchase-service" "api-gateway" "frontend" "db")
 fi
 
 # Check if we're in the right directory
@@ -196,6 +196,10 @@ build_images() {
         case $service in
             "db")
                 print "Skipping database build (using official PostgreSQL image)"
+                ;;
+            "config-server")
+                print "Building config-server..."
+                docker build -t ${DOCKER_REGISTRY:-easyshop}/config-server:${IMAGE_VERSION:-latest} -f ../backend/config-server/Dockerfile ../backend/
                 ;;
             "auth-service")
                 print "Building auth-service..."

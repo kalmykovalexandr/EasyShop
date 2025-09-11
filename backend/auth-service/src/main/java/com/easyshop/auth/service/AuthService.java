@@ -1,7 +1,7 @@
 package com.easyshop.auth.service;
 
-import com.easyshop.auth.user.User;
-import com.easyshop.auth.user.UserRepository;
+import com.easyshop.auth.entity.User;
+import com.easyshop.auth.repository.UserRepository;
 
 import com.easyshop.auth.web.dto.AuthDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,17 +34,18 @@ public class AuthService {
             return false;
         }
         
-        users.save(User.builder()
-                .email(d.email().toLowerCase().trim())
-                .passwordHash(enc.encode(d.password()))
-                .role("USER")
-                .build());
+        User user = new User();
+        user.setEmail(d.email().toLowerCase().trim());
+        user.setPassword(enc.encode(d.password()));
+        user.setRole(User.Role.USER);
+        user.setUsername(d.email().toLowerCase().trim()); // Use email as username
+        users.save(user);
         return true;
     }
 
     public boolean login(AuthDto d) {
         var u = users.findByEmail(d.email().toLowerCase().trim()).orElse(null);
-        return u != null && enc.matches(d.password(), u.getPasswordHash());
+        return u != null && enc.matches(d.password(), u.getPassword());
     }
 
     private boolean isValidPassword(String password) {

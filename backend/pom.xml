@@ -38,6 +38,7 @@
 
     <modules>
         <module>common-web</module>
+        <module>config-server</module>
         <module>auth-service</module>
         <module>product-service</module>
         <module>purchase-service</module>
@@ -72,6 +73,11 @@
                 <groupId>com.easyshop</groupId>
                 <artifactId>common-web</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-config</artifactId>
+                <version>${spring-cloud.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

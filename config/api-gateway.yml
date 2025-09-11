@@ -1,0 +1,50 @@
+# API Gateway specific configuration
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH_SERVER_ISSUER}
+      client:
+        registration:
+          gateway:
+            provider: easyshop
+            client-id: ${GATEWAY_CLIENT_ID}
+            client-secret: ${GATEWAY_CLIENT_SECRET}
+            authorization-grant-type: client_credentials
+            scope: ${GATEWAY_SCOPE}
+        provider:
+          easyshop:
+            issuer-uri: ${AUTH_SERVER_ISSUER}
+
+# JWT configuration
+jwt:
+  secret: ${JWT_SECRET}
+
+# Service URLs for routing
+services:
+  auth:
+    url: ${AUTH_URL}
+  product:
+    url: ${PRODUCT_URL}
+  purchase:
+    url: ${PURCHASE_URL}
+
+# Gateway specific settings
+gateway:
+  service:
+    name: api-gateway
+    version: ${SERVICE_VERSION}
+    description: ${SERVICE_DESCRIPTION}
+
+# Route paths configuration
+routes:
+  auth: ${AUTH_ROUTE}
+  products: ${PRODUCTS_ROUTE}
+  purchases: ${PURCHASES_ROUTE}
+

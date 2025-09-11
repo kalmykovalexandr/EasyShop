@@ -1,0 +1,87 @@
+# Production environment configuration
+spring:
+  profiles:
+    active: prod
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+        default_schema: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}
+
+# Service URLs for production environment
+services:
+  auth:
+    url: ${AUTH_SERVICE_URL}
+    issuer: ${AUTH_SERVER_ISSUER}
+  product:
+    url: ${PRODUCT_SERVICE_URL}
+  purchase:
+    url: ${PURCHASE_SERVICE_URL}
+  api-gateway:
+    url: ${API_GATEWAY_URL}
+
+# API Routes for production environment
+routes:
+  auth: ${AUTH_ROUTE}
+  products: ${PRODUCTS_ROUTE}
+  purchases: ${PURCHASES_ROUTE}
+
+# Frontend configuration for production environment
+frontend:
+  url: ${FRONTEND_URL}
+  api-base: ${API_BASE}
+  auth-server-url: ${AUTH_SERVER_URL}
+
+# Database schemas for production environment
+database:
+  schemas:
+    auth: ${AUTH_SCHEMA}
+    products: ${PRODUCTS_SCHEMA}
+    purchases: ${PURCHASES_SCHEMA}
+
+# Logging for production environment
+logging:
+  level:
+    com.easyshop: WARN
+    org.springframework.security: ERROR
+    org.springframework.web: WARN
+    org.springframework.cloud.config: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# JWT configuration for production environment
+jwt:
+  secret: ${JWT_SECRET}
+  ttl-minutes: ${JWT_TTL_MINUTES}
+
+# OAuth2 configuration for production environment
+oauth2:
+  clients:
+    webapp:
+      client-id: ${WEBAPP_CLIENT_ID}
+      client-secret: ${WEBAPP_CLIENT_SECRET}
+      redirect-uri: ${WEBAPP_REDIRECT_URI}
+      scope: ${WEBAPP_SCOPE}
+    gateway:
+      client-id: ${GATEWAY_CLIENT_ID}
+      client-secret: ${GATEWAY_CLIENT_SECRET}
+    purchase-service:
+      client-id: ${PURCHASE_SERVICE_CLIENT_ID}
+      client-secret: ${PURCHASE_SERVICE_CLIENT_SECRET}
+
+# Security configuration for production
+security:
+  require-ssl: ${REQUIRE_SSL}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS}
+    allowed-methods: ${CORS_ALLOWED_METHODS}
+    allowed-headers: ${CORS_ALLOWED_HEADERS}
+    allow-credentials: ${CORS_ALLOW_CREDENTIALS}
+

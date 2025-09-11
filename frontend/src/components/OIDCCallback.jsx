@@ -60,7 +60,7 @@ export default function OIDCCallback() {
       throw new Error('Code verifier not found')
     }
 
-    const tokenEndpoint = `${window.EASYSHOP_CONFIG?.AUTH_SERVER_URL || 'http://localhost:9001'}/oauth2/token`
+    const tokenEndpoint = `${window.EASYSHOP_CONFIG?.AUTH_SERVER_URL}/oauth2/token`
     
     const response = await fetch(tokenEndpoint, {
       method: 'POST',

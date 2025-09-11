@@ -1,0 +1,47 @@
+# Frontend configuration
+frontend:
+  # API Configuration
+  api:
+    base-url: ${API_BASE_URL}
+    timeout: ${API_TIMEOUT}
+  
+  # OAuth2/OIDC Configuration
+  oauth2:
+    authority: ${AUTH_SERVER_URL}
+    client-id: ${WEBAPP_CLIENT_ID}
+    redirect-uri: ${WEBAPP_REDIRECT_URI}
+    post-logout-redirect-uri: ${WEBAPP_POST_LOGOUT_REDIRECT_URI}
+    response-type: ${WEBAPP_RESPONSE_TYPE}
+    scope: ${WEBAPP_SCOPE}
+    automatic-silent-renew: ${WEBAPP_AUTOMATIC_SILENT_RENEW}
+    load-user-info: ${WEBAPP_LOAD_USER_INFO}
+    pkce: ${WEBAPP_PKCE}
+  
+  # Application Configuration
+  app:
+    name: ${APP_NAME}
+    version: ${APP_VERSION}
+    environment: ${SPRING_PROFILES_ACTIVE}
+    debug: ${DEBUG_MODE}
+  
+  # URLs for different environments
+  urls:
+    local:
+      frontend: ${FRONTEND_URL_LOCAL}
+      api-gateway: ${API_GATEWAY_URL_LOCAL}
+      auth-service: ${AUTH_SERVICE_URL_LOCAL}
+      product-service: ${PRODUCT_SERVICE_URL_LOCAL}
+      purchase-service: ${PURCHASE_SERVICE_URL_LOCAL}
+    test:
+      frontend: ${FRONTEND_URL_TEST}
+      api-gateway: ${API_GATEWAY_URL_TEST}
+      auth-service: ${AUTH_SERVICE_URL_TEST}
+      product-service: ${PRODUCT_SERVICE_URL_TEST}
+      purchase-service: ${PURCHASE_SERVICE_URL_TEST}
+    prod:
+      frontend: ${FRONTEND_URL_PROD}
+      api-gateway: ${API_GATEWAY_URL_PROD}
+      auth-service: ${AUTH_SERVICE_URL_PROD}
+      product-service: ${PRODUCT_SERVICE_URL_PROD}
+      purchase-service: ${PURCHASE_SERVICE_URL_PROD}
+

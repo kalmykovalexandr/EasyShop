@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const response = await fetch(`${window.EASYSHOP_CONFIG?.AUTH_SERVER_URL || 'http://localhost:9001'}/oauth2/token`, {
+      const response = await fetch(`${window.EASYSHOP_CONFIG?.AUTH_SERVER_URL}/oauth2/token`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -177,7 +177,7 @@ export const AuthProvider = ({ children }) => {
     setError(null)
     
     // Redirect to OIDC logout endpoint
-    const logoutUrl = `${window.EASYSHOP_CONFIG?.AUTH_SERVER_URL || 'http://localhost:9001'}/logout?post_logout_redirect_uri=${encodeURIComponent(window.location.origin)}`
+    const logoutUrl = `${window.EASYSHOP_CONFIG?.AUTH_SERVER_URL}/logout?post_logout_redirect_uri=${encodeURIComponent(window.location.origin)}`
     window.location.href = logoutUrl
   }
 

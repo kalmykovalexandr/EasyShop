@@ -1,0 +1,42 @@
+# Product Service specific configuration
+server:
+  port: 9002
+
+spring:
+  application:
+    name: product-service
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH_SERVER_ISSUER}
+
+# Flyway configuration
+spring:
+  flyway:
+    schemas: ${SPRING_FLYWAY_SCHEMAS}
+    default-schema: ${SPRING_FLYWAY_DEFAULT_SCHEMA}
+    create-schemas: ${SPRING_FLYWAY_CREATE_SCHEMAS}
+    table: ${SPRING_FLYWAY_TABLE}
+
+# JWT configuration
+jwt:
+  secret: ${JWT_SECRET}
+
+# Product service specific settings
+product:
+  service:
+    name: product-service
+    version: ${SERVICE_VERSION}
+    description: ${SERVICE_DESCRIPTION}
+
