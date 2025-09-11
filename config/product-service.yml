@@ -29,10 +29,6 @@ spring:
     create-schemas: ${SPRING_FLYWAY_CREATE_SCHEMAS}
     table: ${SPRING_FLYWAY_TABLE}
 
-# JWT configuration
-jwt:
-  secret: ${JWT_SECRET}
-
 # Product service specific settings
 product:
   service:
