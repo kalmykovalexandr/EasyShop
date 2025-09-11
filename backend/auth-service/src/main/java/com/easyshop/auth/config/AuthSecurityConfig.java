@@ -6,7 +6,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.easyshop.auth.service.DatabaseRegisteredClientRepository;
@@ -35,7 +35,8 @@ public class AuthSecurityConfig {
      */
     @Bean
     @Order(1)
-    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
+                                                                      DaoAuthenticationProvider authProvider)
             throws Exception {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
                 OAuth2AuthorizationServerConfigurer.authorizationServer();
@@ -57,7 +58,8 @@ public class AuthSecurityConfig {
                                 new LoginUrlAuthenticationEntryPoint("/login"),
                                 new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
                         )
-                );
+                )
+                .authenticationProvider(authProvider);
 
         return http.build();
     }
@@ -69,7 +71,8 @@ public class AuthSecurityConfig {
      */
     @Bean
     @Order(2)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http,
+                                                          DaoAuthenticationProvider authProvider)
             throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
@@ -82,17 +85,10 @@ public class AuthSecurityConfig {
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .permitAll()
-                );
+                )
+                .authenticationProvider(authProvider);
 
         return http.build();
-    }
-
-    /**
-     * User details service for authentication backed by the database.
-     */
-    @Bean
-    public UserDetailsService userDetailsService(DatabaseUserDetailsService userDetailsService) {
-        return userDetailsService;
     }
 
     /**
@@ -101,6 +97,18 @@ public class AuthSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * Authentication provider using the custom {@link DatabaseUserDetailsService} and password encoding.
+     */
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(DatabaseUserDetailsService userDetailsService,
+                                                            PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder);
+        return authProvider;
     }
 
     /**
