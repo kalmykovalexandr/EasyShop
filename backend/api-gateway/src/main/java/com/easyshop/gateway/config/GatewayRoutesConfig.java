@@ -9,14 +9,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GatewayRoutesConfig {
 
-    @Value("${AUTH_URL}")
-    private String authUrl;
+    @Value("${AUTH_SERVICE_URL}")
+    private String authServiceUrl;
 
-    @Value("${PRODUCT_URL}")
-    private String productUrl;
+    @Value("${PRODUCT_SERVICE_URL}")
+    private String productServiceUrl;
 
-    @Value("${PURCHASE_URL}")
-    private String purchaseUrl;
+    @Value("${PURCHASE_SERVICE_URL}")
+    private String purchaseServiceUrl;
 
     @Value("${AUTH_ROUTE}")
     private String authRoute;
@@ -31,11 +31,11 @@ public class GatewayRoutesConfig {
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("auth", r -> r.path(authRoute)
-                        .uri(authUrl))
+                        .uri(authServiceUrl))
                 .route("products", r -> r.path(productsRoute)
-                        .uri(productUrl))
+                        .uri(productServiceUrl))
                 .route("purchases", r -> r.path(purchasesRoute)
-                        .uri(purchaseUrl))
+                        .uri(purchaseServiceUrl))
                 .build();
     }
 }
