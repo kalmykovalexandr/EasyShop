@@ -8,7 +8,13 @@
 
 ## Quickly start (dev)
 ```bash
-DOCKER_BUILDKIT=1 docker compose -f infra/dev/docker-compose.dev.yml up --build
+DOCKER_BUILDKIT=1 docker compose -f infra/docker-compose.yml up --build
+```
+
+Run with a specific Spring profile, for example `local`:
+
+```bash
+SPRING_PROFILES_ACTIVE=local DOCKER_BUILDKIT=1 docker compose -f infra/docker-compose.yml up --build
 ```
 
 > Docker builds require BuildKit. Ensure `DOCKER_BUILDKIT=1` is set when building images.
