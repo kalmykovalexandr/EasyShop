@@ -75,6 +75,10 @@ JWT_TTL_MINUTES=60
 # Docker Configuration
 IMAGE_VERSION=latest
 DOCKER_REGISTRY=your_docker_registry_or_localhost
+
+# Spring profile (optional)
+# Defaults to 'local' if not set
+SPRING_PROFILES_ACTIVE=local
 ```
 
 **Important**: Replace all placeholder values with your actual configuration values.
