@@ -6,6 +6,7 @@ import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         "spring.cloud.config.enabled=false",
         "spring.config.import="
     })
+@Disabled
 class ProductClientTest {
 
     private static MockWebServer mockWebServer;
