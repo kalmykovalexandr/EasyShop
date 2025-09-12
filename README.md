@@ -30,6 +30,7 @@ repository, update this variable.
 Backend services read configuration from environment variables. Provide them via
 `.env` files for local runs or CI secrets in automated pipelines:
 
+- `CONFIG_SERVER_URI` – URI of the config server (defaults to `http://localhost:8888`).
 - `SERVER_PORT` – port the service listens on.
 - `SPRING_DATASOURCE_URL` – JDBC connection string for Postgres.
 - `SPRING_DATASOURCE_USERNAME` – database username.
