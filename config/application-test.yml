@@ -1,0 +1,22 @@
+# Test environment configuration
+spring:
+  profiles:
+    active: test
+
+logging:
+  level:
+    org.springframework.cloud.config: INFO
+
+oauth2:
+  clients:
+    webapp:
+      client-id: ${WEBAPP_CLIENT_ID}
+      client-secret: ${WEBAPP_CLIENT_SECRET}
+      redirect-uri: ${WEBAPP_REDIRECT_URI}
+      scope: ${WEBAPP_SCOPE}
+    gateway:
+      client-id: ${GATEWAY_CLIENT_ID}
+      client-secret: ${GATEWAY_CLIENT_SECRET}
+    purchase-service:
+      client-id: ${PURCHASE_SERVICE_CLIENT_ID}
+      client-secret: ${PURCHASE_SERVICE_CLIENT_SECRET}
