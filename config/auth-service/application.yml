@@ -4,21 +4,6 @@ server:
 spring:
   application:
     name: auth-service
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    properties:
-      hibernate:
-        default_schema: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}
-  flyway:
-    schemas: ${SPRING_FLYWAY_SCHEMAS}
-    default-schema: ${SPRING_FLYWAY_DEFAULT_SCHEMA}
-    create-schemas: ${SPRING_FLYWAY_CREATE_SCHEMAS}
-    table: ${SPRING_FLYWAY_TABLE}
   security:
     oauth2:
       authorization-server:
@@ -44,4 +29,7 @@ oauth2:
       client-secret: ${PURCHASE_SERVICE_CLIENT_SECRET}
       scope: ${PURCHASE_SERVICE_SCOPE}
       authorization-grant-types: client_credentials
+
+db:
+  schema: ${database.schemas.auth}
 
