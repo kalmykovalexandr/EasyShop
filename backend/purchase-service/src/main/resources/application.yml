@@ -2,7 +2,7 @@ spring:
   application:
     name: purchase-service
   config:
-    import: optional:configserver:http://config-server:8888
+    import: optional:configserver:${CONFIG_SERVER_URI:http://localhost:8888}
   cloud:
     config:
       username: ${CONFIG_SERVER_USER:}
