@@ -26,9 +26,6 @@ spring:
         jwk-set-uri: ${AUTH_SERVER_ISSUER}/oauth2/jwks
         oidc:
           discovery-endpoint: ${AUTH_SERVER_ISSUER}/.well-known/openid-configuration
-jwt:
-  secret: ${JWT_SECRET}
-  ttl-minutes: ${JWT_TTL_MINUTES}
 oauth2:
   clients:
     webapp:

@@ -56,11 +56,6 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
-# JWT configuration for production environment
-jwt:
-  secret: ${JWT_SECRET}
-  ttl-minutes: ${JWT_TTL_MINUTES}
-
 # OAuth2 configuration for production environment
 oauth2:
   clients:
