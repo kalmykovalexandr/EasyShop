@@ -18,12 +18,12 @@ spring:
 # Service URLs for production environment
 services:
   auth:
-    url: ${AUTH_SERVICE_URL}
+    url: ${AUTH_URL}
     issuer: ${AUTH_SERVER_ISSUER}
   product:
-    url: ${PRODUCT_SERVICE_URL}
+    url: ${PRODUCT_URL}
   purchase:
-    url: ${PURCHASE_SERVICE_URL}
+    url: ${PURCHASE_URL}
   api-gateway:
     url: ${API_GATEWAY_URL}
 
