@@ -68,10 +68,6 @@ DB_USER=your_database_username
 DB_PASSWORD=your_secure_database_password
 DB_URL=jdbc:postgresql://db:5432/easyshop
 
-# JWT Configuration
-JWT_SECRET=your_jwt_secret_key_minimum_32_characters
-JWT_TTL_MINUTES=60
-
 # Docker Configuration
 IMAGE_VERSION=latest
 DOCKER_REGISTRY=your_docker_registry_or_localhost
@@ -235,7 +231,6 @@ docker compose -f docker-compose.yml down --rmi all
 
 - Configure firewall to open only necessary ports
 - Use complex passwords for database
-- Configure JWT secrets with sufficient length (minimum 32 characters)
 - Regularly update dependencies
 
 ## Monitoring
