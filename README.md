@@ -32,9 +32,9 @@ Backend services read configuration from environment variables. Provide them via
 
 - `CONFIG_SERVER_URI` – URI of the config server (defaults to `http://localhost:8888`).
 - `SERVER_PORT` – port the service listens on.
-- `SPRING_DATASOURCE_URL` – JDBC connection string for Postgres.
-- `SPRING_DATASOURCE_USERNAME` – database username.
-- `SPRING_DATASOURCE_PASSWORD` – database password (secret).
+- `DB_URL` – JDBC connection string for Postgres.
+- `DB_USER` – database username.
+- `DB_PASSWORD` – database password (secret).
 - `JWT_SECRET` – signing key for JWT tokens (secret).
 - `JWT_TTL_MINUTES` – token lifetime in minutes (defaults to `60`).
 - `AUTH_URL` – base URL of the auth service for the API gateway.
@@ -44,9 +44,11 @@ Backend services read configuration from environment variables. Provide them via
 
 ### Local environment setup
 
+Copy the example environment file and fill in the required values:
+
 ```bash
 cp infra/.env.example .env
-# edit .env with local values
+# edit .env and set DB_URL, DB_USER, DB_PASSWORD, JWT_SECRET, JWT_TTL_MINUTES, SPRING_PROFILES_ACTIVE, IMAGE_VERSION, DOCKER_REGISTRY, CONFIG_SERVER_USER, CONFIG_SERVER_PASSWORD, etc.
 ```
 
 ## Production setup
