@@ -13,7 +13,7 @@ spring:
       hibernate:
         show_sql: false
         format_sql: false
-        default_schema: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}
+        default_schema: ${DB_SCHEMA}
 
 # Service URLs for test environment
 services:

@@ -36,11 +36,7 @@ services:
       DB_URL: ${DB_URL}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
-      SPRING_FLYWAY_SCHEMAS: auth
-      SPRING_FLYWAY_DEFAULT_SCHEMA: auth
-      SPRING_FLYWAY_CREATE_SCHEMAS: "true"
-      SPRING_FLYWAY_TABLE: flyway_schema_history
-      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: auth
+      DB_SCHEMA: auth
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     depends_on:
       config-server: { condition: service_healthy }
@@ -56,11 +52,7 @@ services:
       DB_URL: ${DB_URL}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
-      SPRING_FLYWAY_SCHEMAS: products
-      SPRING_FLYWAY_DEFAULT_SCHEMA: products
-      SPRING_FLYWAY_CREATE_SCHEMAS: "true"
-      SPRING_FLYWAY_TABLE: flyway_schema_history
-      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: products
+      DB_SCHEMA: products
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     depends_on:
       config-server: { condition: service_healthy }
@@ -76,11 +68,7 @@ services:
       DB_URL: ${DB_URL}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
-      SPRING_FLYWAY_SCHEMAS: purchases
-      SPRING_FLYWAY_DEFAULT_SCHEMA: purchases
-      SPRING_FLYWAY_CREATE_SCHEMAS: "true"
-      SPRING_FLYWAY_TABLE: flyway_schema_history
-      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: purchases
+      DB_SCHEMA: purchases
       PRODUCT_SERVICE_URL: http://product-service:9002
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     depends_on:

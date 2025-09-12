@@ -13,7 +13,7 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-        default_schema: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}
+        default_schema: ${DB_SCHEMA}
 
 # Service URLs for local development
 services:

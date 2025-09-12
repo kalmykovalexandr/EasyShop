@@ -33,6 +33,5 @@ purchase:
     version: ${SERVICE_VERSION}
     description: ${SERVICE_DESCRIPTION}
 
-db:
-  schema: ${database.schemas.purchases}
+DB_SCHEMA: ${database.schemas.purchases}
 
