@@ -83,9 +83,9 @@ services:
   api-gateway:
     image: ${DOCKER_REGISTRY}/api-gateway:${IMAGE_VERSION}
     environment:
-      AUTH_URL: http://auth-service:9001
-      PRODUCT_URL: http://product-service:9002
-      PURCHASE_URL: http://purchase-service:9003
+      AUTH_SERVICE_URL: http://auth-service:9001
+      PRODUCT_SERVICE_URL: http://product-service:9002
+      PURCHASE_SERVICE_URL: http://purchase-service:9003
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     depends_on:
       config-server: { condition: service_healthy }

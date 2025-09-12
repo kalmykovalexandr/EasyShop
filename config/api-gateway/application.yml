@@ -25,11 +25,11 @@ spring:
 # Service URLs for routing
 services:
   auth:
-    url: ${AUTH_URL}
+    url: ${AUTH_SERVICE_URL}
   product:
-    url: ${PRODUCT_URL}
+    url: ${PRODUCT_SERVICE_URL}
   purchase:
-    url: ${PURCHASE_URL}
+    url: ${PURCHASE_SERVICE_URL}
 
 # Gateway specific settings
 gateway:
