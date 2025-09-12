@@ -10,10 +10,10 @@ spring:
     config:
       server:
         native:
-          search-locations: classpath:/config/,file:./config/
+          search-locations: classpath:/config/,file:./config/,file:./config/*/
         git:
           uri: ${CONFIG_GIT_URI}
-          search-paths: config
+          search-paths: config,config/*
           default-label: main
           force-pull: true
   security:

@@ -14,23 +14,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${AUTH_SERVER_ISSUER}
-      client:
-        registration:
-          gateway:
-            provider: easyshop
-            client-id: gateway
-            client-secret: ${GATEWAY_CLIENT_SECRET}
-            authorization-grant-type: client_credentials
-            scope: read,write
-          purchase-service:
-            provider: easyshop
-            client-id: purchase-service
-            client-secret: ${PURCHASE_SERVICE_CLIENT_SECRET}
-            authorization-grant-type: client_credentials
-            scope: read,write
-        provider:
-          easyshop:
-            issuer-uri: ${AUTH_SERVER_ISSUER}
 
 # JWT Configuration
 jwt:
