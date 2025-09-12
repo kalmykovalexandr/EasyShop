@@ -84,7 +84,6 @@ CONFIG_SERVER_PASSWORD=config
 
 # Docker
 IMAGE_VERSION=latest
-DOCKER_REGISTRY=localhost
 ```
 
 Modify these values as needed for your environment.
