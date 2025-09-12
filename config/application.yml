@@ -15,11 +15,6 @@ spring:
         jwt:
           issuer-uri: ${AUTH_SERVER_ISSUER}
 
-# JWT Configuration
-jwt:
-  secret: ${JWT_SECRET}
-  ttl-minutes: ${JWT_TTL_MINUTES}
-
 # Service URLs
 services:
   auth:
