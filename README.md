@@ -43,9 +43,11 @@ Backend services read configuration from environment variables. Provide them via
 
 ### Local environment setup
 
+Copy the example environment file and fill in the required values:
+
 ```bash
 cp infra/.env.example .env
-# edit .env with local values
+# edit .env and set DB_URL, DB_USER, DB_PASSWORD, JWT_SECRET, JWT_TTL_MINUTES, SPRING_PROFILES_ACTIVE, IMAGE_VERSION, DOCKER_REGISTRY, CONFIG_SERVER_USER, CONFIG_SERVER_PASSWORD, etc.
 ```
 
 ## Production setup
