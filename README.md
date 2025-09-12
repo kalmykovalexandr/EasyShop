@@ -31,9 +31,9 @@ Backend services read configuration from environment variables. Provide them via
 `.env` files for local runs or CI secrets in automated pipelines:
 
 - `SERVER_PORT` – port the service listens on.
-- `SPRING_DATASOURCE_URL` – JDBC connection string for Postgres.
-- `SPRING_DATASOURCE_USERNAME` – database username.
-- `SPRING_DATASOURCE_PASSWORD` – database password (secret).
+- `DB_URL` – JDBC connection string for Postgres.
+- `DB_USER` – database username.
+- `DB_PASSWORD` – database password (secret).
 - `JWT_SECRET` – signing key for JWT tokens (secret).
 - `JWT_TTL_MINUTES` – token lifetime in minutes (defaults to `60`).
 - `AUTH_URL` – base URL of the auth service for the API gateway.
