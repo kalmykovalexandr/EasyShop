@@ -41,8 +41,6 @@ services:
       SPRING_FLYWAY_CREATE_SCHEMAS: "true"
       SPRING_FLYWAY_TABLE: flyway_schema_history
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: auth
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_TTL_MINUTES: ${JWT_TTL_MINUTES}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     depends_on:
       config-server: { condition: service_healthy }
@@ -63,7 +61,6 @@ services:
       SPRING_FLYWAY_CREATE_SCHEMAS: "true"
       SPRING_FLYWAY_TABLE: flyway_schema_history
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: products
-      JWT_SECRET: ${JWT_SECRET}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     depends_on:
       config-server: { condition: service_healthy }
@@ -84,8 +81,6 @@ services:
       SPRING_FLYWAY_CREATE_SCHEMAS: "true"
       SPRING_FLYWAY_TABLE: flyway_schema_history
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: purchases
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_TTL_MINUTES: ${JWT_TTL_MINUTES}
       PRODUCT_SERVICE_URL: http://product-service:9002
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     depends_on:
@@ -103,7 +98,6 @@ services:
       AUTH_URL: http://auth-service:9001
       PRODUCT_URL: http://product-service:9002
       PURCHASE_URL: http://purchase-service:9003
-      JWT_SECRET: ${JWT_SECRET}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
     depends_on:
       config-server: { condition: service_healthy }
