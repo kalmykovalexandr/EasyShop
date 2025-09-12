@@ -39,12 +39,6 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         
-        <!-- Spring Cloud Starter Bootstrap for externalized configuration -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-bootstrap</artifactId>
-        </dependency>
-        
         <!-- Lombok for reducing boilerplate code -->
         <dependency>
             <groupId>org.projectlombok</groupId>
