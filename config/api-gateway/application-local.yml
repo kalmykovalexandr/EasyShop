@@ -13,17 +13,17 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-        default_schema: ${SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA}
+        default_schema: ${DB_SCHEMA}
 
 # Service URLs for local development
 services:
   auth:
-    url: ${AUTH_URL}
+    url: ${AUTH_SERVICE_URL}
     issuer: ${AUTH_SERVER_ISSUER}
   product:
-    url: ${PRODUCT_URL}
+    url: ${PRODUCT_SERVICE_URL}
   purchase:
-    url: ${PURCHASE_URL}
+    url: ${PURCHASE_SERVICE_URL}
   api-gateway:
     url: ${API_GATEWAY_URL}
 

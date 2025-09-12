@@ -54,34 +54,39 @@ sudo reboot
 
 ### 2. Environment Variables Setup
 
-Create a `.env` file in the project root directory with the following variables:
+Copy the provided example file to the project root and adjust values if needed:
 
 ```bash
-# Create environment variables file
-nano ../.env
+cp infra/.env.example .env
 ```
 
-Required environment variables:
+The example contains sensible defaults for local development:
+
 ```bash
 # Database Configuration
-DB_USER=your_database_username
-DB_PASSWORD=your_secure_database_password
 DB_URL=jdbc:postgresql://db:5432/easyshop
+DB_USER=postgres
+DB_PASSWORD=postgres
 
-# JWT Configuration
-JWT_SECRET=your_jwt_secret_key_minimum_32_characters
-JWT_TTL_MINUTES=60
+# Service URLs
+AUTH_URL=http://auth-service:9001
+PRODUCT_URL=http://product-service:9002
+PURCHASE_URL=http://purchase-service:9003
+PRODUCT_SERVICE_URL=http://product-service:9002
 
-# Docker Configuration
-IMAGE_VERSION=latest
-DOCKER_REGISTRY=your_docker_registry_or_localhost
-
-# Spring profile (optional)
-# Defaults to 'local' if not set
+# Spring Profile
 SPRING_PROFILES_ACTIVE=local
+
+# Config Server
+CONFIG_SERVER_URI=http://localhost:8888
+CONFIG_SERVER_USER=config
+CONFIG_SERVER_PASSWORD=config
+
+# Docker
+IMAGE_VERSION=latest
 ```
 
-**Important**: Replace all placeholder values with your actual configuration values.
+Modify these values as needed for your environment.
 
 ### 3. Application Deployment
 

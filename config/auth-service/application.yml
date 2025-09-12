@@ -30,6 +30,5 @@ oauth2:
       scope: ${PURCHASE_SERVICE_SCOPE}
       authorization-grant-types: client_credentials
 
-db:
-  schema: ${database.schemas.auth}
+DB_SCHEMA: ${database.schemas.auth}
 

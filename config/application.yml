@@ -13,13 +13,13 @@ spring:
       hibernate:
         show_sql: false
         format_sql: false
-        default_schema: ${db.schema}
+        default_schema: ${DB_SCHEMA}
   flyway:
     url: ${DB_URL}
     user: ${DB_USER}
     password: ${DB_PASSWORD}
-    default-schema: ${db.schema}
-    schemas: ${db.schema}
+    default-schema: ${DB_SCHEMA}
+    schemas: ${DB_SCHEMA}
     create-schemas: true
     table: flyway_schema_history
   security:
