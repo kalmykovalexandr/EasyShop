@@ -57,36 +57,10 @@ sudo reboot
 Copy the provided example file to the project root and adjust values if needed:
 
 ```bash
-cp infra/.env.example .env
+cp .env.example .env
 ```
 
-The example contains sensible defaults for local development:
-
-```bash
-# Database Configuration
-DB_URL=jdbc:postgresql://db:5432/easyshop
-DB_USER=postgres
-DB_PASSWORD=postgres
-
-# Service URLs
-AUTH_URL=http://auth-service:9001
-PRODUCT_URL=http://product-service:9002
-PURCHASE_URL=http://purchase-service:9003
-PRODUCT_SERVICE_URL=http://product-service:9002
-
-# Spring Profile
-SPRING_PROFILES_ACTIVE=local
-
-# Config Server
-CONFIG_SERVER_URI=http://localhost:8888
-CONFIG_SERVER_USER=config
-CONFIG_SERVER_PASSWORD=config
-
-# Docker
-IMAGE_VERSION=latest
-```
-
-Modify these values as needed for your environment.
+The `.env.example` file includes sensible defaults for local development. Update the new `.env` with values that match your environment.
 
 ### 3. Application Deployment
 
