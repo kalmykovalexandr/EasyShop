@@ -18,6 +18,5 @@ product:
     version: ${SERVICE_VERSION}
     description: ${SERVICE_DESCRIPTION}
 
-db:
-  schema: ${database.schemas.products}
+DB_SCHEMA: ${database.schemas.products}
 
