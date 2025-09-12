@@ -35,6 +35,13 @@ Backend services read configuration from environment variables. Provide them via
 - `PURCHASE_URL` – base URL of the purchase service for the API gateway.
 - `PRODUCT_BASE_URL` – product service URL used by the purchase service.
 
+### Local environment setup
+
+```bash
+cp infra/.env.example .env
+# edit .env with local values
+```
+
 ## Production setup
 
 On the server, copy the example environment file and fill in the values:
