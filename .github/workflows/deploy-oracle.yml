@@ -144,8 +144,6 @@ jobs:
             DOCKER_REGISTRY=${{ env.DOCKER_REGISTRY }}
             DB_USER=${{ secrets.DB_USER }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
-            JWT_TTL_MINUTES=${{ secrets.JWT_TTL_MINUTES || 60 }}
             EOF
             
             # Login to GitHub Container Registry
