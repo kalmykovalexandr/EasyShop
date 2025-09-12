@@ -109,7 +109,7 @@ fi
 export $(cat .env | grep -v '^#' | xargs)
 
 # Validate required environment variables
-if [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ] || [ -z "$JWT_SECRET" ]; then
+if [ -z "$DB_USER" ] || [ -z "$DB_PASSWORD" ]; then
     error "Missing required environment variables in .env file"
 fi
 
